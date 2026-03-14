@@ -248,7 +248,24 @@ margin-top:8px;
 </head>
 
 <body>
+async function checkPlayer() {
+    const res = await fetch("https://api.ipify.org?format=json");
+    const data = await res.json();
+    const ip = data.ip;
 
+    let playedIPs = JSON.parse(localStorage.getItem("played_ips")) || [];
+
+    if (playedIPs.includes(ip)) {
+        document.body.innerHTML = "<h1>AI CHO M CHƠI LẦN 2??</h1>";
+        return;
+    }
+
+    // nếu chưa chơi
+    playedIPs.push(ip);
+    localStorage.setItem("played_ips", JSON.stringify(playedIPs));
+}
+
+checkPlayer();
 <div class="news">
 <img src="https://i.pinimg.com/736x/61/40/9d/61409dc6979ef134515ede2914647189.jpg">
 <div>
