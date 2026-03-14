@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Murder Puzzle</title>
+
+<style>
+
+#infoText{white-space:pre-line;}
+
+body{
+font-family:"Courier New", monospace;
+background:#f3f3f3;
+margin:0;
+padding:30px;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+/* FIX KHÔNG CO GIÃN */
+body > *{
+width:100%;
+max-width:900px;
+box-sizing:border-box;
+}
+
+/* NEWS BOX */
+
+.news{
+background:#e6dccb;
+border:4px solid black;
+border-radius:15px;
+padding:15px;
+display:flex;
+gap:15px;
+box-shadow:6px 6px #39a6c6;
+}
+
+.news img{
+width:90px;
+flex-shrink:0;
+}
+
+.news h3{
+margin:0;
+font-size:16px;
+}
+
+/* TITLE */
+
+.title{
+margin-top:25px;
+font-size:32px;
+color:#9b0022;
+font-weight:bold;
+}
+
+.subtitle{
+color:#9b0022;
+margin-bottom:20px;
+}
+
+/* INFO BOX */
+
+.info{
+background:#e9e9e9;
+padding:10px;
+margin:15px 0;
+}
+
+/* SUSPECT CARDS */
+
+.cards{
+display:flex;
+gap:30px;
+margin:30px 0;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.card{
+border:3px solid black;
+border-radius:10px;
+width:150px;
+height:150px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+background:#e6e6e6;
+text-align:center;
+}
+
+.card img{
+width:70px;
+}
+
+/* TABS */
+
+.tabs{
+text-align:center;
+margin:10px 0;
+font-size:14px;
+}
+
+.tabs span{
+margin:0 10px;
+text-decoration:underline;
+cursor:pointer;
+}
+
+/* BOX */
+
+.box{
+background:#e6dccb;
+border:3px solid black;
+border-radius:10px;
+padding:20px;
+margin:30px 0;
+box-shadow:5px 5px #39a6c6;
+position:relative;
+}
+
+.box h3{
+text-align:center;
+margin-top:0;
+}
+
+/* HELP BUTTON */
+
+.help-btn{
+position:absolute;
+right:15px;
+bottom:10px;
+color:#b30000;
+font-size:12px;
+cursor:pointer;
+text-decoration:underline;
+font-weight:bold;
+}
+
+/* CLUE CLICK */
+
+.clue{
+cursor:pointer;
+}
+
+.clue.done{
+text-decoration:line-through;
+color:#777;
+}
+
+/* BUTTON */
+
+button{
+margin-top:10px;
+padding:10px 20px;
+background:#0a4d6b;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#083a50;
+}
+
+.result{
+font-weight:bold;
+margin-top:10px;
+font-size:16px;
+}
+
+/* POPUP */
+
+.modal{
+display:none;
+position:fixed;
+z-index:999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+}
+
+.modal-content{
+background:#fff;
+width:350px;
+padding:20px;
+border-radius:10px;
+margin:12% auto;
+text-align:center;
+border:3px solid black;
+}
+
+.decode-btn,.fingerprint-btn{
+color:#0a4d6b;
+cursor:pointer;
+text-decoration:underline;
+font-weight:bold;
+}
+
+.close{
+float:right;
+font-size:20px;
+cursor:pointer;
+}
+
+/* FINGERPRINT BOARD */
+
+.fingerprint-board{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:25px;
+margin-top:20px;
+justify-items:center;
+}
+
+.fingerprint-card{
+border:3px solid black;
+border-radius:10px;
+background:#f4f4f4;
+padding:15px;
+width:180px;
+text-align:center;
+box-shadow:4px 4px #39a6c6;
+}
+
+.fingerprint-card img{
+width:110px;
+height:110px;
+object-fit:contain;
+display:block;
+margin:auto;
+}
+
+.fingerprint-name{
+font-size:13px;
+font-weight:bold;
+margin-top:8px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="news">
+<img src="https://i.pinimg.com/736x/61/40/9d/61409dc6979ef134515ede2914647189.jpg">
+<div>
+<h3>Vụ án đầu tiên cho các con vợ</h3>
+<p>Mấy vợ giải đúng liên hệ anh nhé!!</p>
+</div>
+</div>
+
+<h1 class="title">VỤ ÁN MẠNG TẠI BẢO TÀNG NGHỆ THUẬT</h1>
+<p class="subtitle">NGÀY 14 THÁNG 3, 2026</p>
+
+<div class="info">
+Hey seri, phát nổ.
+</div>
+
+<p>
+Một thám tử cảnh sát đã gọi cho Мила Роза nổi tiếng và nhờ cô giải một vụ án mà anh ta không thể phá được: tại một bảo tàng nghệ thuật, một nghệ sĩ được trả thù lao rất cao đã bị sát hại!
+</p>
+
+<div class="cards">
+
+<div class="card">
+<img src="https://i.pinimg.com/736x/d3/c8/b9/d3c8b9abc3db2d49eed7795e03f1e54b.jpg">
+<p>Bành Thị Điềm</p>
+</div>
+
+<div class="card">
+<img src="https://i.pinimg.com/1200x/2c/e6/7e/2ce67e0812f846ac4187f33f3de45ca4.jpg">
+<p>Thái Thị Rí</p>
+</div>
+
+<div class="card">
+<img src="https://i.pinimg.com/736x/ae/48/ff/ae48fff8652b3e1e0c3c1c9d6feb9b42.jpg">
+<p>Cà Thị Chua</p>
+</div>
+
+<div class="card">
+<img src="https://i.pinimg.com/736x/8d/ad/ab/8dadab433935be93e3422117decad7a7.jpg">
+<p>Sói Cô Độc</p>
+</div>
+</div> 
+<div class="tabs">
+<span onclick="showCategory('suspects')">NGHI PHẠM</span> •
+<span onclick="showCategory('weapons')">HUNG KHÍ</span> •
+<span onclick="showCategory('locations')">ĐỊA ĐIỂM</span> •
+<span onclick="showCategory('motives')">ĐỘNG CƠ</span>
+</div>
+
+<div class="box">
+
+<h3>MANH MỐI & BẰNG CHỨNG</h3>
+
+<ul>
+
+<li class="clue" onclick="toggleClue(this)">
+Một người quen của Мила Роза trong Hội LABUBU của MEOW MEOW đã cho cô manh mối này:
+TEH AZIMNAG LEINROUA TDNEAW OT GERA TWHI ULASYJEO.
+<span class="decode-btn" onclick="openDecode();event.stopPropagation()">(Hãy giải mã)</span>
+</li>
+
+<li class="clue" onclick="toggleClue(this)">
+Người muốn cướp của nạn nhân đã ở sảnh vào.
+</li>
+
+<li class="clue" onclick="toggleClue(this)">
+Một sợi tóc vàng được tìm thấy quấn quanh bức tranh nặng.
+</li>
+
+<li class="clue" onclick="toggleClue(this)">
+Người mang chiếc bình cổ hiếm là người thuận tay phải.
+</li>
+
+<li class="clue" onclick="toggleClue(this)">
+<span class="fingerprint-btn" onclick="openFinger();event.stopPropagation()">Dấu vân tay</span>
+này được tìm thấy trong phòng vẽ.
+</li>
+
+<li class="clue" onclick="toggleClue(this)">
+Nghi phạm cao nhất đã mang Murdle: Volume 3.
+</li>
+
+<li class="clue" onclick="toggleClue(this)">
+Người muốn loại bỏ một gián điệp có tóc vàng.
+</li>
+
+</ul>
+
+</div>
+
+<p>
+Sau đó, trong khi vuốt đôi lông mày tuyệt đẹp của mình, Мила Роза ghi lại lời khai của 4 nghi phạm. Cô biết rằng người vô tội sẽ luôn nói thật, còn kẻ có tội thì luôn nói dối.
+</p>
+
+<div class="box">
+
+<h3>LỜI KHAI</h3>
+
+<p>Bành Thị Điềm: Cà Thị Chua ở sảnh vào.</p>
+<p>Thái Thị Rí: Bành Thị Điềm ở phòng tắm.</p>
+<p>Cà Thị Chua: Không mang theo Murdle: Volume 3.</p>
+<p>Sói Cô Độc: Bành Thị Điềm đã mang Murdle: Volume 3.</p>
+
+<span class="help-btn" onclick="openHelp()">HELP</span>
+
+</div>
+
+<div class="box">
+
+<select id="who">
+<option value="">AI?</option>
+<option value="diem">Bành Thị Điềm</option>
+<option value="ri">Thái Thị Rí</option>
+<option value="chua">Cà Thị Chua</option>
+<option value="soi">Sói Cô Độc</option>
+</select>
+
+<select id="how">
+<option value="">BẰNG CÁCH NÀO?</option>
+<option value="painting">một bức tranh nặng</option>
+<option value="book">Murdle: Tập 3</option>
+<option value="tea">một tách trà bị đầu độc</option>
+<option value="vase">một chiếc bình cổ hiếm</option>
+</select>
+
+<select id="where">
+<option value="">Ở ĐÂU?</option>
+<option value="hall">sảnh vào</option>
+<option value="bathroom">phòng tắm</option>
+<option value="rooftop">khu vườn trên mái</option>
+<option value="studio">phòng vẽ</option>
+</select>
+
+<select id="why">
+<option value="">TẠI SAO?</option>
+<option value="rob">để cướp của nạn nhân</option>
+<option value="jealousy">vì ghen tuông</option>
+<option value="argument">để thắng tranh cãi</option>
+<option value="spy">để loại bỏ gián điệp</option>
+</select>
+
+<br>
+
+<button onclick="checkAnswer()">Check Đáp Án</button>
+
+<p id="result" class="result"></p>
+
+</div>
+
+<!-- HELP -->
+
+<div id="helpModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeHelp()">×</span>
+<h3>CÁCH TÌM AI NÓI DỐI</h3>
+<p>Người vô tội luôn nói thật. Kẻ có tội luôn nói dối. Hãy tìm lời khai mâu thuẫn.</p>
+</div>
+</div>
+
+<!-- DECODE -->
+
+<div id="decodeModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeDecode()">×</span>
+<h3>GỢI Ý GIẢI MÃ</h3>
+<p>Các chữ cái đã bị xáo trộn. Hãy thử sắp xếp lại chúng.</p>
+</div>
+</div>
+
+<!-- FINGERPRINT -->
+
+<div id="fingerModal" class="modal">
+<div class="modal-content" style="width:80%;max-width:800px;">
+
+<span class="close" onclick="closeFinger()">×</span>
+
+<h3>DẤU VÂN TAY</h3>
+
+<p>Đây là dấu vân tay mà Мила Роза đã phát hiện:</p>
+
+<img src="https://murdle.com/prints/16.png" width="150">
+
+<p>So sánh dấu vân tay tìm được với các mẫu sau:</p>
+
+<div class="fingerprint-board">
+
+<div class="fingerprint-card">
+<img src="https://murdle.com/prints/13.png">
+<div class="fingerprint-name">Bành Thị Điềm</div>
+</div>
+
+<div class="fingerprint-card">
+<img src="https://murdle.com/prints/34.png">
+<div class="fingerprint-name">Thái Thị Rí</div>
+</div>
+
+<div class="fingerprint-card">
+<img src="https://murdle.com/prints/16.png">
+<div class="fingerprint-name">Cà Thị Chua</div>
+</div>
+
+<div class="fingerprint-card">
+<img src="https://murdle.com/prints/33.png">
+<div class="fingerprint-name">Sói Cô Độc</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+
+function toggleClue(el){
+el.classList.toggle("done");
+}
+
+function checkAnswer(){
+
+let who=document.getElementById("who").value;
+let how=document.getElementById("how").value;
+let where=document.getElementById("where").value;
+let why=document.getElementById("why").value;
+
+let result=document.getElementById("result");
+
+let names={
+diem:"Bành Thị Điềm",
+ri:"Thái Thị Rí",
+chua:"Cà Thị Chua",
+soi:"Sói Cô Độc"
+};
+
+let weapons={
+painting:"một bức tranh nặng",
+book:"Murdle: Tập 3",
+tea:"một tách trà bị đầu độc",
+vase:"một chiếc bình cổ hiếm"
+};
+
+let places={
+hall:"sảnh vào",
+bathroom:"phòng tắm",
+rooftop:"khu vườn trên mái",
+studio:"phòng vẽ"
+};
+
+let motives={
+rob:"để cướp của nạn nhân",
+jealousy:"vì ghen tuông",
+argument:"để thắng tranh cãi",
+spy:"để loại bỏ gián điệp"
+};
+
+/* đáp án đúng */
+
+let correctWho="ri";
+let correctHow="vase";
+let correctWhere="studio";
+let correctWhy="argument";
+
+/* kiểm tra */
+
+let suspectCorrect = (who===correctWho);
+let weaponCorrect = (how===correctHow);
+let locationCorrect = (where===correctWhere);
+let motiveCorrect = (why===correctWhy);
+
+let icon=(v)=> v ? "✔️" : "❌";
+let color=(v)=> v ? "green" : "crimson";
+
+/* bảng kết quả */
+
+let board=`
+
+<p style="font-size:18px;margin-bottom:15px;">
+“Chính ${names[who]||"..."} với ${weapons[how]||"..."} trong ${places[where]||"..."}.
+Tại sao ư? ${motives[why]||"..."}.” — Мила Роза tuyên bố.
+</p>
+
+<div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:15px;">
+
+<div style="border:3px solid black;border-radius:10px;width:130px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eee;">
+<div style="font-size:40px;color:${color(suspectCorrect)}">${icon(suspectCorrect)}</div>
+<div>HUNG THỦ</div>
+</div>
+
+<div style="border:3px solid black;border-radius:10px;width:130px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eee;">
+<div style="font-size:40px;color:${color(weaponCorrect)}">${icon(weaponCorrect)}</div>
+<div>HUNG KHÍ</div>
+</div>
+
+<div style="border:3px solid black;border-radius:10px;width:130px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eee;">
+<div style="font-size:40px;color:${color(locationCorrect)}">${icon(locationCorrect)}</div>
+<div>ĐỊA ĐIỂM</div>
+</div>
+
+<div style="border:3px solid black;border-radius:10px;width:130px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eee;">
+<div style="font-size:40px;color:${color(motiveCorrect)}">${icon(motiveCorrect)}</div>
+<div>NGUYÊN NHÂN</div>
+</div>
+
+</div>
+`;
+
+let story="";
+
+/* nếu đúng hết */
+
+if(suspectCorrect && weaponCorrect && locationCorrect && motiveCorrect){
+
+story=`
+
+<div style="margin-top:30px;line-height:1.6">
+
+<p>Mặc dù <b>${names[correctWho]}</b> vẫn cố khẳng định mình vô tội, nhưng hắn không thể chống lại những lập luận logic đến nghẹt thở của thám tử suy luận của chúng ta, và cuối cùng đã phải thừa nhận mình đã bị bắt quả tang.</p>
+
+<p>“Là một người lính, tôi sẽ làm tròn nghĩa vụ của mình… nhưng khi tôi được ra ngoài, Мила Роза tôi sẽ quay lại tìm cô…” hắn nhổ nước bọt đầy căm tức.</p>
+
+<p>Мила Роза lặng lẽ nhìn hắn bị dẫn đi, biết rằng đây sẽ là lần cuối cùng cô nhìn thấy hắn.</p>
+
+<p><b>Và đó là hồi kết của vụ án MẠNG ÁN TẠI BẢO TÀNG NGHỆ THUẬT.</b></p>
+
+</div>
+`;
+
+}
+
+/* nếu sai */
+
+else{
+
+story=`
+
+<div style="margin-top:30px;line-height:1.6">
+
+<p><b>${names[who]||"Nghi phạm đó"}</b> đã kịch liệt khẳng định mình vô tội và thuê Thanh tra Irratino làm nhân chứng chuyên gia cho mình!</p>
+
+<p>Tại phiên tòa, Thanh tra đã tiết lộ tử vi hằng ngày của tất cả những người liên quan — và điều đó đã chứng minh rằng 
+<b>${names[correctWho]}</b> đã gây án tại <b>${places[correctWhere]}</b> bằng <b>${weapons[correctHow]}</b> vì <b>${motives[correctWhy]}</b>.</p>
+
+<p>Khi bồi thẩm đoàn phân tích vụ án, họ nhận ra rằng đó là lời giải duy nhất hợp lý. Thanh tra Irratino không thể hiểu nổi làm thế nào mà cô <b>Bậc thầy Suy luận vĩ đại!</b> — lại có thể sai lầm đến vậy. Có lẽ đã đến lúc ông nên nghỉ hưu chăng?</p>
+
+<p><b>Và đó là hồi kết của vụ án MẠNG ÁN TẠI BẢO TÀNG NGHỆ THUẬT.</b></p>
+
+</div>
+`;
+
+}
+
+result.innerHTML = board + story;
+
+}
+
+/* -------- CARD DATA -------- */
+
+let cardData={
+
+suspects:[
+{
+name:"Bành Thị Điềm",
+img:"https://i.pinimg.com/736x/d3/c8/b9/d3c8b9abc3db2d49eed7795e03f1e54b.jpg",
+info:"Đây hoàn toàn là một người đàn ông trưởng thành, chứ không phải 2 đứa trẻ đứng chồng lên nhau trong một chiếc áo khoác dài. Anh ta có thể làm những việc của người lớn như xem phim R-rated, mua bia và thức khuya quá giờ đi ngủ. (Gửi bởi Kaela.) 2m34 • thuận tay phải • mắt xanh • tóc vàng • cung Song Tử"
+},
+{
+name:"Thái Thị Rí",
+img:"https://i.pinimg.com/1200x/2c/e6/7e/2ce67e0812f846ac4187f33f3de45ca4.jpg",
+info:"Một người sành espresso, hắn luôn uống tách cà phê buổi sáng trước khi phái lính của mình ra chiến trường để chết. Vì danh dự ư? Vì vinh quang ư? Vì của cải ư? Hay là… vì tình yêu với hạt cà phê? 1m83 • Thuận tay phải • Mắt nâu • Không tóc • Nhân Mã"
+},
+{
+name:"Cà Thị Chua",
+img:"https://i.pinimg.com/736x/ae/48/ff/ae48fff8652b3e1e0c3c1c9d6feb9b42.jpg",
+info:"Một nhà văn trinh thám, tác giả của những cuốn sách (như cuốn bán chạy A Very Proper Murder) đã bán được nhiều bản hơn cả Kinh Thánh và Shakespeare cộng lại.1m63 • Thuận tay trái • Mắt xanh lá • Tóc đen • Sư Tử"
+},
+{
+name:"Sói Cô Độc",
+img:"https://i.pinimg.com/736x/8d/ad/ab/8dadab433935be93e3422117decad7a7.jpg",
+info:"Một ảo thuật gia lưu diễn, người đã hoàn thiện màn ảo thuật “cưa đôi người chồng”. Sau đó, cô còn khiến cái xác biến mất. Với màn tiếp theo của mình, cô ấy sẽ cần… một tình nguyện viên. 1m68 • Thuận tay trái • Mắt xanh lá • Tóc vàng • Bạch Dương"
+}
+],
+
+weapons:[
+{
+name:"Bức tranh nặng",
+img:"https://cdn-icons-png.flaticon.com/512/1829/1829586.png",
+info:"Мила Роза khi còn nhỏ không hiểu nghệ thuật trừu tượng, và bây giờ khi đã trưởng thành… anh vẫn không hiểu. Nhưng anh nhận ra lớp sơn đang bong ra. Мила Роза có thể tưởng tượng ai đó bị đánh đập bằng thứ như thế này. Nó có thể được nhận dạng nhờ một mảnh sơn bong còn sót lại. Nặng • Làm bằng sơn, vải canvas và gỗ"
+},
+{
+name:"Murdle: Tập 3",
+img:"https://cdn-icons-png.flaticon.com/512/29/29302.png",
+info:"Hãy ghé thăm TekTopia, nghiên cứu marot, gia nhập S.P.Y., và còn nhiều điều nữa trong phần kết hoành tráng của bộ ba First Murdle, được biết đến ở Anh với tên “Even More Killer Puzzles”! Hãy đặt trước ngay hôm nay! Trọng lượng trung bình • Làm bằng giấy"
+},
+{
+name:"Tách trà độc",
+img:"https://i.pinimg.com/1200x/cf/aa/b1/cfaab171cb7e091acafa5b9a7c2ae063.jpg",
+info:"Мила Роза xem xét tách trà. Nó thiếu một túi trà. Điều đó khá thú vị. À… ít nhất là đáng chú ý. Hoặc… đại loại là có gì đó bất thường. Мила Роза từng thấy người ta bị đầu độc bằng thứ như thế này. Nó có thể được nhận dạng nhờ một túi trà còn sót lại. Nhẹ • Làm bằng gốm và chất lỏng"
+},
+{
+name:"Bình cổ hiếm",
+img:"https://i.pinimg.com/736x/a7/02/22/a7022209cefa4234eea191f83f4c71bf.jpg",
+info:"Мила Роза nghĩ rằng, về mặt kỹ thuật, mọi chiếc bình do ai đó làm bằng tay đều hiếm, vì chỉ có duy nhất một cái như vậy. Anh cũng nhận ra rằng chiếc này dường như đã bị vỡ. Мила Роза từng giải những vụ án mà ai đó bị đánh bằng thứ giống thế này. Nó có thể được nhận dạng nhờ một mảnh gốm cổ còn sót lại. Nặng • Làm bằng gốm"
+}
+],
+
+locations:[
+{
+name:"Sảnh vào",
+img:"https://cdn-icons-png.flaticon.com/512/619/619034.png",
+info:"Theo một tấm bảng trên tường, ngay cả kiến trúc của sảnh vào cũng được xem là một tác phẩm nghệ thuật. Điều đó giải thích vì sao họ tính phí vào cửa cao đến vậy - Trong nhà"
+},
+{
+name:"Phòng tắm",
+img:"https://i.pinimg.com/1200x/1c/28/d0/1c28d027955f99ea001107dd418d97dc.jpg",
+info:"Мила Роза đã dành vài phút xem xét thứ mà anh tưởng là một bức tượng điêu khắc, nhưng hóa ra đó lại là cửa vào nhà vệ sinh. Bên trong có rất nhiều loại xà phòng sang trọng. - Trong nhà"
+},
+{
+name:"Vườn trên mái",
+img:"https://cdn-icons-png.flaticon.com/512/427/427735.png",
+info:"Một khu vườn trên mái! Có cả bồ câu! Мила Роза nghĩ rằng Irratino hẳn sẽ đặc biệt thích nơi này, dù nói thật thì có lẽ cậu ta thích tất cả những thứ nghệ thuật ở đây. - Ngoài trời"
+},
+{
+name:"Phòng vẽ",
+img:"https://i.pinimg.com/736x/9d/dc/79/9ddc79f04f6e3c8b7d5d290978838812.jpg",
+info:"Ở phía sau bảo tàng có một phòng vẽ nơi tổ chức các lớp học nghệ thuật. Мила Роза nghĩ rằng có lẽ mình nên tham gia một lớp. Biết đâu lúc đó anh sẽ hiểu được mọi người đang ồn ào về điều gì. (Vì thế anh đã lấy một tờ flyer.) - Trong nhà"
+}
+],
+
+motives:[
+{
+name:"Cướp của",
+img:"https://cdn-icons-png.flaticon.com/512/3135/3135706.png",
+info:"Có thể họ mang theo một viên kim cương cực kỳ đắt tiền? Hoặc một chiếc mũ thật ngầu."
+},
+{
+name:"Ghen tuông",
+img:"https://i.pinimg.com/736x/00/76/77/007677c7f2d0f75b5247a633c64b19ae.jpg",
+info:"Мила Роза đã thấy đủ mọi chuyện. Anh từng thấy có người bị giết… chỉ vì một cái bánh bagel."
+},
+{
+name:"Thắng tranh cãi",
+img:"https://cdn-icons-png.flaticon.com/512/747/747376.png",
+info:"Đôi khi chỉ có một cách chắc chắn để thắng một cuộc tranh cãi."
+},
+{
+name:"Loại bỏ gián điệp",
+img:"https://i.pinimg.com/736x/14/2e/48/142e487f6af931a1cce653dfba470b4a.jpg",
+info:"Bất kỳ ai cũng có thể là gián điệp. Và bất kỳ ai cũng có thể muốn giết một gián điệp. Vì vậy… bất kỳ ai cũng có thể muốn giết bất kỳ ai."
+}
+]
+
+};
+
+/* -------- SHOW CATEGORY -------- */
+
+function showCategory(type){
+
+let board=document.querySelector(".cards");
+
+board.innerHTML="";
+
+cardData[type].forEach(item=>{
+
+let card=document.createElement("div");
+
+card.className="card";
+
+card.innerHTML=`
+<img src="${item.img}">
+<p>${item.name}</p>
+`;
+
+card.onclick=function(){
+openInfo(item.name,item.info);
+};
+
+board.appendChild(card);
+
+});
+
+}
+
+/* -------- POPUP -------- */
+
+function openInfo(name,text){
+document.getElementById("infoTitle").innerText=name;
+document.getElementById("infoText").innerText=text;
+document.getElementById("infoModal").style.display="block";
+}
+
+function closeInfo(){
+document.getElementById("infoModal").style.display="none";
+}
+
+/* LOAD DEFAULT */
+
+window.onload=function(){
+showCategory("suspects");
+};
+</script>
+
+<div id="infoModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeInfo()">×</span>
+<h3 id="infoTitle"></h3>
+<p id="infoText"></p>
+</div>
+</div>
+
+</body>
+</html>

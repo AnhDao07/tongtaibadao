@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Trang Game Suy Luận</title>
+
+<style>
+
+/* ===== FONT ===== */
+
+@font-face{
+font-family: dearpix;
+src:url("../fonts/dearpix-1-94.otf");
+}
+
+@font-face{
+font-family:lithos;
+src:url("../fonts/Lithos-Bold.ttf");
+}
+
+/* ===== BODY ===== */
+
+body{
+font-family: Arial;
+margin:0;
+background:#f3f3f3;
+}
+
+/* ===== HEADER ===== */
+
+header{
+text-align:center;
+padding:30px;
+background:#222;
+}
+
+/* ===== TITLE CẦU VỒNG ===== */
+
+.title{
+
+font-family:dearpix;
+font-size:55px;
+
+background:linear-gradient(
+90deg,
+red,
+orange,
+yellow,
+green,
+cyan,
+blue,
+violet,
+red
+);
+
+background-size:400%;
+-webkit-background-clip:text;
+color:transparent;
+
+animation:rainbow 6s linear infinite;
+
+}
+
+@keyframes rainbow{
+
+0%{background-position:0%}
+100%{background-position:400%}
+
+}
+
+/* ===== NAVBAR ===== */
+
+nav{
+
+background:#444;
+padding:12px;
+
+display:flex;
+justify-content:center;
+gap:40px;
+
+}
+
+nav a{
+
+font-family:lithos;
+color:white;
+text-decoration:none;
+font-size:20px;
+
+}
+
+nav a:hover{
+
+color:#ffd700;
+
+}
+
+/* ===== GAME LIST ===== */
+
+.game-list{
+
+width:85%;
+margin:auto;
+margin-top:40px;
+
+}
+
+/* ===== GAME CARD ===== */
+
+.game-item{
+
+display:flex;
+align-items:center;
+
+background:white;
+
+margin-bottom:30px;
+
+padding:20px;
+
+border-radius:10px;
+
+box-shadow:0 0 10px rgba(0,0,0,0.15);
+
+gap:30px;
+
+}
+
+/* ===== GAME IMAGE ===== */
+
+.game-img{
+
+max-width:320px;
+height:auto;
+
+object-fit:contain;
+
+border-radius:6px;
+
+}
+
+/* ===== GAME INFO ===== */
+
+.game-info h2{
+
+font-size:40px;
+margin:0;
+color:#0a4d6b;
+
+}
+
+.game-info p{
+
+margin:6px 0;
+
+}
+
+/* ===== PLAY BUTTON ===== */
+
+.play-btn{
+
+display:inline-block;
+
+margin-top:10px;
+
+padding:8px 16px;
+
+background:#0a4d6b;
+
+color:white;
+
+text-decoration:none;
+
+border-radius:6px;
+
+}
+
+.play-btn:hover{
+
+background:#083a50;
+
+}
+
+/* ===== FACEBOOK LINK ===== */
+
+.fb-link{
+
+color:white;
+text-decoration:none;
+
+}
+
+.fb-link:hover{
+
+color:#ffd700;
+
+}
+
+/* ===== FOOTER ===== */
+
+footer{
+
+margin-top:50px;
+
+background:#222;
+color:white;
+
+text-align:center;
+
+padding:20px;
+
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width:700px){
+
+.title{
+
+font-size:38px;
+
+}
+
+.game-img{
+
+max-width:45%;
+
+}
+
+.game-info h2{
+
+font-size:26px;
+
+}
+
+nav a{
+
+font-size:16px;
+
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1 class="title">ĐẠI LÝ BÁN CỨT</h1>
+</header>
+
+<nav>
+
+<a href="../index.html">Trang chủ</a>
+
+</nav>
+
+
+<section class="game-list">
+
+<!-- GAME CON -->
+
+<div class="game-item">
+
+<img class="game-img"
+src="https://i.pinimg.com/736x/61/40/9d/61409dc6979ef134515ede2914647189.jpg">
+
+<div class="game-info">
+
+<h2>1</h2>
+
+<p>Biết pass không??</p>
+
+<button class="play-btn" onclick="checkPass()">
+Chơi ngay
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+
+<p>facebook liên hệ:</p>
+
+<a class="fb-link"
+href="https://www.facebook.com/profile.php?id=61582242182174"
+target="_blank">
+
+<h3>Мила Роза</h3>
+
+</a>
+
+</footer>
+
+
+
+<script>
+
+function checkPass(){
+
+let pass = prompt("Nhập mật khẩu:");
+
+if(pass === "ha hong ra bo ia cho an"){
+
+window.location.href="secretgame.html";
+
+}
+
+else{
+
+alert("Con gà có pass cũng sai há há há há");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
