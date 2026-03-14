@@ -247,23 +247,7 @@ margin-top:8px;
 </style>
 </head>
 
-<body>async function checkPlayer() {
-    const res = await fetch("https://api.ipify.org?format=json");
-    const data = await res.json();
-    const ip = data.ip;
-
-    const savedIP = localStorage.getItem("played_ip");
-
-    if (savedIP === ip) {
-        document.body.innerHTML = "<h1>CÚT CHO TAOOOO </h1>";
-        throw new Error("Blocked");
-    }
-
-    localStorage.setItem("played_ip", ip);
-}
-
-checkPlayer();
-<div class="news">
+<body><div class="news">
 <img src="https://i.pinimg.com/736x/61/40/9d/61409dc6979ef134515ede2914647189.jpg">
 <div>
 <h3>Vụ án đầu tiên cho các con vợ</h3>
@@ -759,6 +743,23 @@ document.getElementById("infoModal").style.display="none";
 window.onload=function(){
 showCategory("suspects");
 };
+    async function checkPlayer() {
+    const res = await fetch("https://api.ipify.org?format=json");
+    const data = await res.json();
+    const ip = data.ip;
+
+    const savedIP = localStorage.getItem("played_ip");
+
+    if (savedIP === ip) {
+        document.body.innerHTML = "<h1>CÚT CHO TAOOOO </h1>";
+        throw new Error("Blocked");
+    }
+
+    localStorage.setItem("played_ip", ip);
+}
+
+checkPlayer();
+
 </script>
 
 <div id="infoModal" class="modal">
