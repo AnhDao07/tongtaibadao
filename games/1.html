@@ -247,22 +247,19 @@ margin-top:8px;
 </style>
 </head>
 
-<body>
-async function checkPlayer() {
+<body>async function checkPlayer() {
     const res = await fetch("https://api.ipify.org?format=json");
     const data = await res.json();
     const ip = data.ip;
 
-    let playedIPs = JSON.parse(localStorage.getItem("played_ips")) || [];
+    const savedIP = localStorage.getItem("played_ip");
 
-    if (playedIPs.includes(ip)) {
-        document.body.innerHTML = "<h1>AI CHO M CHƠI LẦN 2??</h1>";
-        return;
+    if (savedIP === ip) {
+        document.body.innerHTML = "<h1>CÚT CHO TAOOOO </h1>";
+        throw new Error("Blocked");
     }
 
-    // nếu chưa chơi
-    playedIPs.push(ip);
-    localStorage.setItem("played_ips", JSON.stringify(playedIPs));
+    localStorage.setItem("played_ip", ip);
 }
 
 checkPlayer();
