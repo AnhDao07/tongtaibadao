@@ -5,9 +5,39 @@
 <title>ANH IU BEEE</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;800&display=swap" rel="stylesheet">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 
+
+  @media (max-width:768px){
+
+h1{
+font-size:32px;
+}
+
+p{
+font-size:16px;
+}
+
+.victim-img{
+width:140px;
+}
+
+.controls{
+bottom:15px;
+right:15px;
+}
+
+button{
+font-size:18px;
+padding:10px 16px;
+}
+
+.witness-card{
+width:100%;
+}
+
+}
 /* CHỌN HUNG THỦ */
 
 .killer-panel{
@@ -77,8 +107,10 @@ height:100vh;
 
 .slide{
 min-width:100vw;
-padding:70px;
+height:100vh;
+padding:30px;
 box-sizing:border-box;
+overflow-y:auto;
 }
 
 h1{
@@ -626,7 +658,7 @@ update()
 }
 
 function update(){
-container.style.transform = "translateX(-" + current * 100 + "vw)"
+container.style.transform = `translateX(-${current * 100}vw)`
 }
 
 let witnessData = [
