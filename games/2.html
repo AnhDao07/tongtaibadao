@@ -237,14 +237,12 @@ font-family:'Merriweather', serif;
 .modal{
 display:none;
 position:fixed;
-z-index:999;
+z-index:9999;
 left:0;
 top:0;
 width:100%;
 height:100%;
 background:rgba(0,0,0,0.7);
-padding:20px;
-box-sizing:border-box;
 }
 
 .modal-content{
@@ -259,6 +257,8 @@ margin-top:10vh;
 text-align:center;
 border:3px solid #5a0000;
 box-shadow:0 0 20px #2b0000;
+ position:relative;
+z-index:10000;
 }
 
 .decode-btn,.fingerprint-btn{
@@ -342,6 +342,15 @@ padding:15px;
 <div>
 <h3>Vụ án đầu tiên cho các con vợ</h3>
 <p>Mấy vợ giải đúng liên hệ anh nhé!!</p>
+</div>
+</div>
+
+ 
+<div id="infoModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeInfo()">×</span>
+<h3 id="infoTitle"></h3>
+<p id="infoText"></p>
 </div>
 </div>
 
@@ -744,7 +753,6 @@ board.appendChild(card);
 
 }
 
-
 /* -------- POPUP -------- */
 
 
@@ -757,39 +765,25 @@ document.getElementById("fingerModal").style.display="none";
 }
 
 function openInfo(name,text){
-
-/* đóng fingerprint nếu đang mở */
-
-closeFinger();
-
-let modal=document.getElementById("infoModal");
-
 document.getElementById("infoTitle").innerText=name;
 document.getElementById("infoText").innerText=text;
-
-modal.style.display="block";
-
+document.getElementById("infoModal").style.display="block";
 }
 
 function closeInfo(){
 document.getElementById("infoModal").style.display="none";
 }
+ 
 
 /* LOAD DEFAULT */
 
 window.onload=function(){
+
+if(document.querySelector(".cards .card")==null){
 showCategory("suspects");
-
-/* thêm sự kiện click cho card ban đầu */
-
-document.querySelectorAll(".cards .card").forEach((card,i)=>{
-card.onclick=function(){
-openInfo(cardData.suspects[i].name,cardData.suspects[i].info);
-};
-});
+}
 
 };
-});
   /*  async function checkPlayer() {
     const res = await fetch("https://api.ipify.org?format=json");
     const data = await res.json();
@@ -807,16 +801,21 @@ openInfo(cardData.suspects[i].name,cardData.suspects[i].info);
 
 checkPlayer(); */
 
+window.onload=function(){
+showCategory("suspects");
+};
 
+document.querySelectorAll(".cards .card").forEach((card,i)=>{
+
+card.onclick=function(){
+
+let data=cardData.suspects[i];
+openInfo(data.name,data.info);
+
+};
+
+});
 </script>
-
-<div id="infoModal" class="modal">
-<div class="modal-content">
-<span class="close" onclick="closeInfo()">×</span>
-<h3 id="infoTitle"></h3>
-<p id="infoText"></p>
-</div>
-</div>
 
 </body>
 </html>
