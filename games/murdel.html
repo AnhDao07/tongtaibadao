@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Trang Game Suy Luận</title>
+<title>ANH IU EM VI CI EO</title>
 
 <style>
 
@@ -276,7 +276,7 @@ src="https://i.pinimg.com/736x/61/40/9d/61409dc6979ef134515ede2914647189.jpg">
 
 <p>Biết pass không??</p>
 
-<button class="play-btn" onclick="checkPass()">
+<button class="play-btn" onclick="checkPass('ha hong ra bo ia cho an','1.html')">
 Chơi ngay
 </button>
 
@@ -284,6 +284,25 @@ Chơi ngay
 
 </div>
 
+<!-- GAME CON 2 -->
+<div class="game-item">
+
+<img class="game-img"
+src="https://i.pinimg.com/736x/04/65/3c/04653c6ae76250b154e2b839ca255efd.jpg">
+
+<div class="game-info">
+
+<h2>2</h2>
+
+<p>pass từ 1 đến 4</p>
+
+<button class="play-btn" onclick="checkPass('1234','2.html')">
+Chơi ngay
+</button>
+
+</div>
+
+</div>
 </section>
 
 
@@ -305,24 +324,18 @@ target="_blank">
 
 <script>
 
-function checkPass(){
+function checkPass(passDung, link){
 
-let pass = prompt("Nhập mật khẩu:");
+let pass = prompt("Nhập mật khẩu đi rồi chơi");
 
-if(pass === "ha hong ra bo ia cho an"){
-
-window.location.href="1.html";
-
+if(pass === passDung){
+window.location.href = link;
 }
-
 else{
-
-alert("Con gà có pass cũng sai há há há há");
-
+alert("Sai mật khẩu rồi con bò của anh ơi.");
 }
 
 }
-
 </script>
 
 </body>
