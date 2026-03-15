@@ -15,6 +15,11 @@ line-height:1.6;
 color:#e8e8e8;
 }
 
+ .clue.done{
+text-decoration: line-through;
+opacity:0.6;
+}
+ 
 /* BODY */
 
 body{
@@ -609,7 +614,7 @@ let story="";
 
 /* nếu đúng hết */
 
-if(suspectCorrect && weaponCorrect && locationCorrect && motiveCorrect){
+if(suspectCorrect && weaponCorrect && locationCorrect){
 
 story=`
 
@@ -635,11 +640,11 @@ story=`
 <p><b>${names[who]||"Nghi phạm đó"}</b> đã kịch liệt khẳng định mình vô tội và thuê Thanh tra Irratino làm nhân chứng chuyên gia cho mình!</p>
 
 <p>Tại phiên tòa, Thanh tra đã tiết lộ tử vi hằng ngày của tất cả những người liên quan — và điều đó đã chứng minh rằng 
-<b>${names[correctWho]}</b> đã gây án tại <b>${places[correctWhere]}</b> bằng <b>${weapons[correctHow]}</b> vì <b>${motives[correctWhy]}</b>.</p>
+<b>${names[correctWho]}</b> đã gây án tại <b>${places[correctWhere]}</b> bằng <b>${weapons[correctHow]}</b>.</p>
 
 <p>Khi bồi thẩm đoàn phân tích vụ án, họ nhận ra rằng đó là lời giải duy nhất hợp lý. Thanh tra Irratino không thể hiểu nổi làm thế nào mà cô <b>Bậc thầy Suy luận vĩ đại!</b> — lại có thể sai lầm đến vậy. Có lẽ đã đến lúc ông nên nghỉ hưu chăng?</p>
 
-<p><b>Và đó là hồi kết của vụ án MẠNG ÁN TẠI BẢO TÀNG NGHỆ THUẬT.</b></p>
+<p><b>Và đó là hồi kết của vụ án MẠNG ÁN TẠI NHÀ HÁT HY LẠP.</b></p>
 
 </div>
 `;
@@ -752,9 +757,18 @@ document.getElementById("fingerModal").style.display="none";
 }
 
 function openInfo(name,text){
+
+/* đóng fingerprint nếu đang mở */
+
+closeFinger();
+
+let modal=document.getElementById("infoModal");
+
 document.getElementById("infoTitle").innerText=name;
 document.getElementById("infoText").innerText=text;
-document.getElementById("infoModal").style.display="block";
+
+modal.style.display="block";
+
 }
 
 function closeInfo(){
@@ -765,7 +779,17 @@ document.getElementById("infoModal").style.display="none";
 
 window.onload=function(){
 showCategory("suspects");
+
+/* thêm sự kiện click cho card ban đầu */
+
+document.querySelectorAll(".cards .card").forEach((card,i)=>{
+card.onclick=function(){
+openInfo(cardData.suspects[i].name,cardData.suspects[i].info);
 };
+});
+
+};
+});
   /*  async function checkPlayer() {
     const res = await fetch("https://api.ipify.org?format=json");
     const data = await res.json();
