@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Murder Puzzle</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+#infoText{
+white-space:pre-line;
+font-family:'Merriweather', serif;
+line-height:1.6;
+color:#e8e8e8;
+}
+
+/* BODY */
+
+body{
+font-family:'Merriweather', serif;
+background:#0f0f0f;
+color:#e8e8e8;
+margin:0;
+padding:20px;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+/* CONTAINER */
+
+body > *{
+width:100%;
+max-width:1000px;
+box-sizing:border-box;
+}
+
+/* NEWS BOX */
+
+.news{
+background:#1a1a1a;
+border:3px solid #5a0000;
+border-radius:15px;
+padding:15px;
+display:flex;
+gap:15px;
+box-shadow:0 0 15px #300000;
+align-items:center;
+color:#e8e8e8;
+}
+
+.news img{
+width:80px;
+height:auto;
+flex-shrink:0;
+}
+
+.news h3{
+color:#ff4d4d;
+margin:0;
+}
+
+.news p{
+color:#cfcfcf;
+}
+
+/* TITLE */
+
+.title{
+margin-top:25px;
+font-size:34px;
+color:#ff2a2a;
+font-weight:bold;
+font-family:"Courier New", monospace;
+text-shadow:0 0 6px #600000, 0 0 12px #300000;
+}
+
+.subtitle{
+color:#c44;
+margin-bottom:20px;
+font-family:"Courier New", monospace;
+text-align:center;
+}
+
+/* INFO BOX */
+
+.info{
+background:#1a1a1a;
+color:#e0e0e0;
+padding:12px;
+margin:15px 0;
+border-radius:6px;
+border-left:4px solid #b30000;
+}
+
+/* SUSPECT CARDS */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:25px;
+margin:30px 0;
+justify-items:center;
+}
+
+.card{
+border:2px solid #5a0000;
+border-radius:10px;
+width:100%;
+max-width:160px;
+aspect-ratio:1/1;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+background:#1b1b1b;
+text-align:center;
+cursor:pointer;
+transition:all .25s;
+box-shadow:0 0 8px #2a0000;
+}
+
+.card:hover{
+transform:scale(1.06);
+box-shadow:0 0 15px #6b0000;
+}
+
+.card img{
+width:60%;
+height:auto;
+object-fit:contain;
+}
+
+.card p{
+color:#f0f0f0;
+font-family:"Courier New", monospace;
+font-size:14px;
+margin-top:8px;
+}
+
+/* TABS */
+
+.tabs{
+text-align:center;
+margin:10px 0;
+font-size:14px;
+}
+
+.tabs span{
+margin:0 10px;
+text-decoration:underline;
+cursor:pointer;
+font-family:"Courier New", monospace;
+color:#ff4d4d;
+}
+
+/* BOX */
+
+.box{
+background:#1a1a1a;
+border:3px solid #5a0000;
+border-radius:10px;
+padding:20px;
+margin:30px 0;
+box-shadow:0 0 12px #2b0000;
+color:#e6e6e6;
+position:relative;
+}
+
+.box h3{
+text-align:center;
+margin-top:0;
+font-family:"Courier New", monospace;
+color:#ff4d4d;
+}
+
+/* HELP BUTTON */
+
+.help-btn{
+position:absolute;
+right:15px;
+bottom:10px;
+color:#ff4d4d;
+font-size:12px;
+cursor:pointer;
+text-decoration:underline;
+font-weight:bold;
+}
+
+/* BUTTON */
+
+button{
+margin-top:10px;
+padding:10px 20px;
+background:#5a0000;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-family:"Courier New", monospace;
+transition:0.2s;
+}
+
+button:hover{
+background:#8b0000;
+box-shadow:0 0 10px #600000;
+}
+
+/* RESULT */
+
+.result{
+font-weight:bold;
+margin-top:10px;
+font-size:16px;
+}
+
+/* SELECT */
+
+select{
+padding:8px;
+margin:5px;
+border-radius:6px;
+border:2px solid #5a0000;
+background:#1a1a1a;
+color:#e8e8e8;
+font-family:'Merriweather', serif;
+}
+
+/* POPUP */
+
+.modal{
+display:none;
+position:fixed;
+z-index:999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+padding:20px;
+box-sizing:border-box;
+}
+
+.modal-content{
+background:#1a1a1a;
+color:#e8e8e8;
+width:100%;
+max-width:500px;
+padding:20px;
+border-radius:10px;
+margin:auto;
+margin-top:10vh;
+text-align:center;
+border:3px solid #5a0000;
+box-shadow:0 0 20px #2b0000;
+}
+
+.decode-btn,.fingerprint-btn{
+color:#ff4d4d;
+cursor:pointer;
+text-decoration:underline;
+font-weight:bold;
+}
+
+.close{
+float:right;
+font-size:22px;
+cursor:pointer;
+color:#ff4d4d;
+}
+
+/* FINGERPRINT BOARD */
+
+.fingerprint-board{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:25px;
+margin-top:20px;
+justify-items:center;
+}
+
+.fingerprint-card{
+border:2px solid #5a0000;
+border-radius:10px;
+background:#1b1b1b;
+padding:15px;
+width:100%;
+max-width:180px;
+text-align:center;
+box-shadow:0 0 10px #2b0000;
+color:#e6e6e6;
+}
+
+.fingerprint-card img{
+width:100px;
+height:100px;
+object-fit:contain;
+}
+
+.fingerprint-name{
+font-size:13px;
+font-weight:bold;
+margin-top:8px;
+font-family:"Courier New", monospace;
+color:#ff4d4d;
+}
+
+/* MOBILE */
+
+@media (max-width:600px){
+
+.title{
+font-size:26px;
+}
+
+.news{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.cards{
+grid-template-columns:repeat(2,1fr);
+}
+
+.box{
+padding:15px;
+}
+
+}
+
+</style>
+</head>
+
+<body><div class="news">
+<img src="https://i.pinimg.com/736x/ab/0c/84/ab0c848b3ce5113a390fb8873b237962.jpg">
+<div>
+<h3>Vụ án đầu tiên cho các con vợ</h3>
+<p>Mấy vợ giải đúng liên hệ anh nhé!!</p>
+</div>
+</div>
+
+<h1 class="title">VỤ ÁN MẠNG TẠI....</h1>
+<p class="subtitle">NGÀY 15 THÁNG 3, 2026</p>
+
+<div class="info">
+Hey seri, phát nổ.
+</div>
+
+<p> Hồi còn học ở Học viện NARUTO, Shizukon đã từng phá giải vụ án mạng của một diễn giả đến thăm. </p>
+
+<div class="cards">
+
+
+<div class="card">
+
+<img src="https://i.pinimg.com/736x/0c/0e/4c/0c0e4cf79680400c07d5d06b7b6d49da.jpg">
+
+<p>Chủ tịch Cố</p>
+
+</div>
+
+
+<div class="card">
+
+<img src="https://i.pinimg.com/474x/49/3d/b0/493db0ec32ecb384ccbe32d55d08414b.jpg">
+
+<p>Thiên Kim Thật</p>
+
+</div>
+
+
+<div class="card">
+
+<img src="https://i.pinimg.com/736x/8e/14/dc/8e14dc6712897181d30a30e22095e8f0.jpg">
+
+<p>Thiên Kim Giả</p>
+
+</div>
+
+ 
+</div> 
+<div class="tabs">
+<span onclick="showCategory('suspects')">NGHI PHẠM</span> •
+<span onclick="showCategory('weapons')">HUNG KHÍ</span> •
+<span onclick="showCategory('locations')">ĐỊA ĐIỂM</span> 
+</div>
+
+<div class="box">
+
+<h3>MANH MỐI & BẰNG CHỨNG</h3>
+
+<ul>
+
+<li class="clue" onclick="toggleClue(this)">
+
+Thiên Kim thật có mối quan hệ kiểu “trái ngược với tình yêu” với người đã mang dây danh dự tốt nghiệp.
+
+</li> <br>
+
+
+<li class="clue" onclick="toggleClue(this)">
+
+Một nguồn tin ẩn danh mà Shizukon tin tưởng đã gửi cho thông điệp sau:
+
+“ELCNU THGINDIM THGUORB A RIAP FO SROSSICS.”
+
+</li><br>
+
+
+<li class="clue" onclick="toggleClue(this)">
+
+Ba lô nặng không ở trong tòa nhà liên hiệp sinh viên.
+
+</li><br>
+
+
+<li class="clue" onclick="toggleClue(this)" style="color: red; font-weight: bold;">
+
+Thi thể được tìm thấy trong nhà hát Hy Lạp.
+
+</li><br>
+
+
+<li class="clue" onclick="toggleClue(this)">
+
+<span class="fingerprint-btn" onclick="openFinger();event.stopPropagation()">Dấu vân tay</span>
+
+này được tìm thấy trong vườn cây.
+
+</li>
+
+</ul>
+
+
+</div>
+
+<p> Sau khi Shizukon kiểm tra lại suy luận của mình và chắc chắn rằng chỉ có một lời giải duy nhất, ông đã đến Hội đồng quản trị và tuyên bố ai là kẻ gây án. </p>
+
+<div class="box">
+
+<select id="who">
+<option value="">AI?</option>
+<option value="co">Chủ tịch Cố </option>
+<option value="that">Thiên Kim thật</option>
+<option value="gia">Thiên Kim giả</option>
+</select>
+
+<select id="how">
+<option value="">BẰNG CÁCH NÀO?</option>
+<option value="day">Dây danh dự tốt nghiệp🎗️</option>
+<option value="cap">Balo nặng</option>
+<option value="keo">Một cặp kéo</option>
+</select>
+
+<select id="where">
+<option value="">Ở ĐÂU?</option>
+<option value="nha">TÒA NHÀ LIÊN HIỆP SINH VIÊN</option>
+<option value="hylal">NHÀ HÁT HY LẠP</option>
+<option value="vuon">VƯỜN CÂY THỰC VẬT</option>
+</select>
+
+<br>
+
+<button onclick="checkAnswer()">Check Đáp Án</button>
+
+<p id="result" class="result"></p>
+
+</div>
+
+<!-- FINGERPRINT -->
+
+<div id="fingerModal" class="modal">
+<div class="modal-content" style="width:80%;max-width:800px;">
+
+<span class="close" onclick="closeFinger()">×</span>
+
+<h3>DẤU VÂN TAY</h3>
+
+<p>Đây là dấu vân tay mà Shizukon đã phát hiện:</p>
+
+<img src="https://murdle.com/prints/27.png" width="150">
+
+<p>So sánh dấu vân tay tìm được với các mẫu sau:</p>
+
+<div class="fingerprint-board">
+
+
+<div class="fingerprint-card">
+
+<img src="https://murdle.com/prints/27.png">
+
+<div class="fingerprint-name">Chủ tịch Cố</div>
+
+</div>
+
+
+<div class="fingerprint-card">
+
+<img src="https://murdle.com/prints/35.png">
+
+<div class="fingerprint-name">Thiên Kim thật</div>
+
+</div>
+
+
+<div class="fingerprint-card">
+
+<img src="https://murdle.com/prints/27.png">
+
+<div class="fingerprint-name">Thiên Kim giả</div>
+
+</div>
+
+</div>
+</div>
+
+<script>
+
+function toggleClue(el){
+el.classList.toggle("done");
+}
+
+function checkAnswer(){
+
+let who=document.getElementById("who").value;
+let how=document.getElementById("how").value;
+let where=document.getElementById("where").value; 
+
+let result=document.getElementById("result");
+
+let names={
+
+co:"Chủ tịch Cố",
+
+that:"Thiên Kim thật",
+
+gia:"Thiên Kim giả",
+
+};
+
+
+let weapons={
+
+day:"Dây danh dự tốt nghiệp",
+
+cap:"Balo nặng",
+
+keo:"Một cặp kéo"
+
+};
+
+
+let places={
+
+nha:"TÒA NHÀ LIÊN HIỆP SINH VIÊN",
+
+hylal:"NHÀ HÁT HY LẠP",
+
+vuon:"VƯỜN CÂY THỰC VẬT"
+
+};
+
+/* đáp án đúng */
+
+let correctWho="that";
+let correctHow="cap";
+let correctWhere="hylal"; 
+
+/* kiểm tra */
+
+let suspectCorrect = (who===correctWho);
+let weaponCorrect = (how===correctHow);
+let locationCorrect = (where===correctWhere); 
+
+let icon=(v)=> v ? "✔️" : "❌";
+let color=(v)=> v ? "green" : "crimson";
+
+/* bảng kết quả */
+
+let board=`
+
+<p style="font-size:18px;margin-bottom:15px;">
+“Chính ${names[who]||"..."} với ${weapons[how]||"..."} trong ${places[where]||"..."}.
+” — Shizukon tuyên bố.
+</p>
+
+<div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:15px;">
+
+<div style="border:3px solid black;border-radius:10px;width:130px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eee;">
+<div style="font-size:40px;color:${color(suspectCorrect)}">${icon(suspectCorrect)}</div>
+<div>HUNG THỦ</div>
+</div>
+
+<div style="border:3px solid black;border-radius:10px;width:130px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eee;">
+<div style="font-size:40px;color:${color(weaponCorrect)}">${icon(weaponCorrect)}</div>
+<div>HUNG KHÍ</div>
+</div>
+
+<div style="border:3px solid black;border-radius:10px;width:130px;height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#eee;">
+<div style="font-size:40px;color:${color(locationCorrect)}">${icon(locationCorrect)}</div>
+<div>ĐỊA ĐIỂM</div>
+</div>
+
+</div>
+`;
+
+let story="";
+
+/* nếu đúng hết */
+
+if(suspectCorrect && weaponCorrect && locationCorrect && motiveCorrect){
+
+story=`
+
+<div style="margin-top:30px;line-height:1.6">
+
+<p>Mặc dù <b>${names[correctWho]}</b> phản đối việc mình bị buộc tội, toàn bộ đội ngũ giảng viên đều chấp nhận lập luận của Shizukon.</p>
+
+<p><b>Và đó là hồi kết của vụ án MẠNG ÁN TẠI NHÀ HÁT HY LẠP.</b></p>
+
+</div>
+`;
+
+}
+
+/* nếu sai */
+
+else{
+
+story=`
+
+<div style="margin-top:30px;line-height:1.6">
+
+<p><b>${names[who]||"Nghi phạm đó"}</b> đã kịch liệt khẳng định mình vô tội và thuê Thanh tra Irratino làm nhân chứng chuyên gia cho mình!</p>
+
+<p>Tại phiên tòa, Thanh tra đã tiết lộ tử vi hằng ngày của tất cả những người liên quan — và điều đó đã chứng minh rằng 
+<b>${names[correctWho]}</b> đã gây án tại <b>${places[correctWhere]}</b> bằng <b>${weapons[correctHow]}</b> vì <b>${motives[correctWhy]}</b>.</p>
+
+<p>Khi bồi thẩm đoàn phân tích vụ án, họ nhận ra rằng đó là lời giải duy nhất hợp lý. Thanh tra Irratino không thể hiểu nổi làm thế nào mà cô <b>Bậc thầy Suy luận vĩ đại!</b> — lại có thể sai lầm đến vậy. Có lẽ đã đến lúc ông nên nghỉ hưu chăng?</p>
+
+<p><b>Và đó là hồi kết của vụ án MẠNG ÁN TẠI BẢO TÀNG NGHỆ THUẬT.</b></p>
+
+</div>
+`;
+
+}
+
+result.innerHTML = board + story;
+
+}
+
+/* -------- CARD DATA -------- */
+
+let cardData={
+
+suspects:[
+{
+name:"Chủ Tịch Cố",
+img:"https://i.pinimg.com/736x/0c/0e/4c/0c0e4cf79680400c07d5d06b7b6d49da.jpg",
+info:" Chủ tịch của Cty mua bán nội tạng. Nếu anh ấy mời bạn bước vào metaverse của mình, hãy cẩn thận. Cao 1m73 • Thuận tay phải • Mắt nâu • Tóc đen • Cung Kim Ngưu"
+},
+{
+name:"Thiên Kim Thật",
+img:"https://i.pinimg.com/474x/49/3d/b0/493db0ec32ecb384ccbe32d55d08414b.jpg",
+info:"Một thợ kim hoàn người Ý rất nổi tiếng. Cô đã đi khắp thế giới để tìm kiếm những viên đá quý hiếm  và chúng thường xuyên rơi ra khỏi túi của cô. Cao 1m73 • Thuận tay trái • Mắt nâu • Tóc đen • Cung Nhân Mã"
+},
+{
+name:"Thiên Kim Giả",
+img:"https://i.pinimg.com/736x/8e/14/dc/8e14dc6712897181d30a30e22095e8f0.jpg",
+info:"Khi bố côqua đời, cô mua một biệt thự giữa sa mạc có hồ bơi và nghỉ hưu. Lúc đó cô 17 tuổi. Cao 1m73 • Thuận tay trái • Mắt xanh • Tóc nâu • Cung Nhân Mã"
+} 
+],
+
+weapons:[
+{
+name:"DÂY DANH DỰ TỐT NGHIỆP",
+img:"https://i.pinimg.com/736x/b4/10/f5/b410f5c6b31d23884723868e12b67559.jpg",
+info:"Thật là một vinh dự nếu bị siết cổ bằng thứ này. - Nhẹ • Làm từ vải"
+},
+{
+name:"BA LÔ NẶNG",
+img:"https://i.pinimg.com/736x/0f/2f/96/0f2f96ea1b040b9bb69660d44dc96e5a.jpg",
+info:"Cuối cùng thì đống sách giáo trình logic đó cũng có ích. - Nặng • Làm từ vải & sách"
+},
+{
+name:"MỘT CẶP KÉO",
+img:"https://i.pinimg.com/736x/01/ea/11/01ea11a770218c42c8a95158b93076c9.jpg",
+info:"Có thể dùng cho thủ công mỹ nghệ — đặc biệt nếu “nghệ thuật” là giết người và “thủ công” là tẩu thoát sau đó. - Nhẹ • Làm từ kim loại"
+}
+],
+
+locations:[
+{
+name:"TÒA NHÀ LIÊN HIỆP SINH VIÊN",
+img:"https://cdn-icons-png.flaticon.com/512/619/619034.png",
+info:"Đây là nơi hội sinh viên làm việc. Nhưng thực ra ai cũng có thể ngồi ở đây — vì có rất nhiều ghế. - Trong nhà"
+},
+{
+name:"NHÀ HÁT HY LẠP",
+img:"https://i.pinimg.com/1200x/1c/28/d0/1c28d027955f99ea001107dd418d97dc.jpg",
+info:"Một nhà hát hoàn hảo cho các cuộc đối thoại kiểu Socrates, các vở kịch “giết người ngoài trời”, hoặc chỉ đơn giản là tụ tập.. - Ngoài "
+},
+{
+name:"VƯỜN CÂY THỰC VẬT",
+img:"https://cdn-icons-png.flaticon.com/512/427/427735.png",
+info:"Một vườn cây nằm ngay giữa khuôn viên trường. Hiện đang mọc đầy cỏ dại. - Ngoài trời"
+}
+]
+
+};
+
+/* -------- SHOW CATEGORY -------- */
+
+function showCategory(type){
+
+let board=document.querySelector(".cards");
+
+board.innerHTML="";
+
+cardData[type].forEach(item=>{
+
+let card=document.createElement("div");
+
+card.className="card";
+
+card.innerHTML=`
+<img src="${item.img}">
+<p>${item.name}</p>
+`;
+
+card.onclick=function(){
+openInfo(item.name,item.info);
+};
+
+board.appendChild(card);
+
+});
+
+}
+
+
+/* -------- POPUP -------- */
+
+
+function openFinger(){
+document.getElementById("fingerModal").style.display="block";
+}
+
+function closeFinger(){
+document.getElementById("fingerModal").style.display="none";
+}
+
+function openInfo(name,text){
+document.getElementById("infoTitle").innerText=name;
+document.getElementById("infoText").innerText=text;
+document.getElementById("infoModal").style.display="block";
+}
+
+function closeInfo(){
+document.getElementById("infoModal").style.display="none";
+}
+
+/* LOAD DEFAULT */
+
+window.onload=function(){
+showCategory("suspects");
+};
+  /*  async function checkPlayer() {
+    const res = await fetch("https://api.ipify.org?format=json");
+    const data = await res.json();
+    const ip = data.ip;
+
+    const savedIP = localStorage.getItem("played_ip");
+
+    if (savedIP === ip) {
+        document.body.innerHTML = "<h1>CÚT CHO TAOOOO AI CHO M CHOI NHIEU LAN HA CON CHO</h1>";
+        throw new Error("Blocked");
+    }
+
+    localStorage.setItem("played_ip", ip);
+}
+
+checkPlayer(); */
+
+
+</script>
+
+<div id="infoModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeInfo()">×</span>
+<h3 id="infoTitle"></h3>
+<p id="infoText"></p>
+</div>
+</div>
+
+</body>
+</html>
