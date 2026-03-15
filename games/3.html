@@ -1,0 +1,822 @@
+  <!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>ANH IU BEEE</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+
+/* CHỌN HUNG THỦ */
+
+.killer-panel{
+background:rgba(0,0,0,0.6);
+padding:25px;
+border-radius:12px;
+width:420px;
+max-width:90%;
+border:2px solid #ffffff30;
+margin-top:20px;
+}
+
+.killer-panel select{
+width:100%;
+padding:10px;
+margin-top:10px;
+margin-bottom:10px;
+border-radius:6px;
+border:none;
+font-size:16px;
+background:#222;
+color:white;
+}
+
+.killer-panel button{
+font-size:18px;
+margin-top:10px;
+background:#ff4d4d;
+}
+
+.killer-panel button:hover{
+background:#ff6666;
+}
+
+body{
+margin:0;
+font-family:"Be Vietnam Pro", sans-serif;
+
+background-image:url("https://i.pinimg.com/736x/ed/1a/16/ed1a16eb9d4ba772e6b1a2fac3b10295.jpg");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+
+color:white;
+}
+
+/* lớp phủ tối */
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,0.55);
+
+z-index:-1;
+}
+
+.game-container{
+display:flex;
+transition: transform 0.5s ease;
+width:100vw;
+height:100vh;
+}
+
+.slide{
+min-width:100vw;
+padding:70px;
+box-sizing:border-box;
+}
+
+h1{
+color:#ff4d4d;
+font-size:48px;
+margin-bottom:20px;
+}
+
+h2{
+color:#ffd166;
+margin-bottom:15px;
+}
+
+p{
+font-size:18px;
+line-height:1.6;
+}
+
+.controls{
+position:fixed;
+bottom:25px;
+right:25px;
+}
+
+button{
+font-size:22px;
+padding:12px 22px;
+margin:5px;
+cursor:pointer;
+background:#333;
+color:white;
+border:none;
+border-radius:8px;
+}
+
+button:hover{
+background:#555;
+}
+
+.victim-img{
+
+width:220px;
+max-width:40vw;
+
+float:right;
+
+margin-left:25px;
+margin-bottom:15px;
+
+border-radius:10px;
+
+border:3px solid #ffffff30;
+
+box-shadow:0 0 15px rgba(0,0,0,0.6);
+
+}
+
+.fb-link{
+color:white;
+text-decoration-line: underline;
+text-decoration-style: dotted; /* gạch chân dạng chấm */
+text-decoration-color: white;
+font-weight:600;
+}
+
+.fb-link:hover{
+color:#ffd166;
+text-decoration-color:#ffd166;
+}
+
+/* WITNESS CARD */
+
+.witness-container{
+display:flex;
+gap:25px;
+flex-wrap:wrap;
+margin-top:30px;
+}
+
+.witness-card{
+background:#1e1e1e;
+padding:20px;
+width:220px;
+border-radius:10px;
+cursor:pointer;
+transition:0.3s;
+border:2px solid #ffffff20;
+}
+
+.witness-card:hover{
+transform:scale(1.05);
+background:#333;
+}
+
+.witness-card h3{
+margin:0;
+color:#ffd166;
+}
+
+/* MODAL */
+
+.witness-modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.85);
+justify-content:center;
+align-items:center;
+}
+
+.witness-box{
+background:#111;
+padding:35px;
+width:350px;
+border-radius:12px;
+position:relative;
+box-shadow:0 0 25px black;
+}
+
+.witness-close{
+position:absolute;
+top:10px;
+right:15px;
+font-size:28px;
+cursor:pointer;
+}
+
+.next-witness{
+margin-top:20px;
+padding:10px 18px;
+font-size:16px;
+cursor:pointer;
+background:#ff4d4d;
+border:none;
+border-radius:6px;
+color:white;
+}
+
+
+.result-popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.8);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.result-box{
+background:#111;
+padding:40px;
+border-radius:14px;
+font-size:28px;
+text-align:center;
+border:2px solid #ffffff30;
+box-shadow:0 0 25px black;
+}
+
+.result-correct{
+color:#00ff9c;
+}
+
+.result-wrong{
+color:#ff4d4d;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="game-container" id="container">
+
+<div class="slide">
+<h1>Hồ Sơ Điều Tra</h1> 
+
+<p>Vào ngày <b>23 tháng 2 năm 2025</b>, thành phố <b>CON BÒ</b> đã trở thành hiện trường của một vụ án mạng làm rung chuyển cấu trúc quyền lực trong cả giới doanh nghiệp lẫn gia đình. <b>Khánh Cho Tim</b> một doanh nhân có ảnh hưởng lớn trong ngành dược phẩm, đã bị sát hại một cách tàn bạo trong văn phòng của mình tại <b>dinh thự Blackwood</b>. <br><br>
+
+Vụ án được đánh dấu bởi những manh mối bí ẩn, bằng chứng kỹ thuật số tinh vi và một mạng lưới quan hệ mờ ám.<br><br>
+
+Hồ sơ này được chuẩn bị dành cho những điều tra viên sắc bén nhất, tập hợp thông tin, lời khai, báo cáo giám định, phân tích kỹ thuật số và bằng chứng pháp y.<br><br>
+Sự phức tạp của vụ án đòi hỏi phải chú ý đến từng chi tiết và phân tích kỹ lưỡng từng manh mối.</p>
+</div>
+
+<div class="slide">
+<h1>Hồ Sơ Nạn Nhân</h1>
+<img class="victim-img" src="https://i.pinimg.com/474x/e3/a8/8b/e3a88b3f0333128bf9cbaa4d477a3a20.jpg">
+
+<p>
+<b>Tên:</b> 
+<a class="fb-link" href="https://www.facebook.com/dlyan.wel" target="_blank">
+Khánh Chim To
+</a><br>
+<b>Tuổi:</b> 58<br> 
+<b>Nghề nghiệp:</b> Doanh nhân ngành dược phẩm<br> 
+<b>Nguyên nhân tử vong:</b> Bị đâm bằng vũ khí sắc nhọn vào ngực<br> 
+<b>Địa điểm gây án:</b>Văn phòng trong dinh thự Blackwood<br> 
+
+<b>Thời điểm tử vong ước tính:</b> Từ <b>20h đến 22h</b> ngày <b>23 tháng 2 năm 2025</b><br><br>
+Khánh là một người đàn ông mang nhiều bí mật, nổi tiếng không chỉ vì khả năng kinh doanh mà còn vì phong thái bí ẩn của mình. Cái chết của ông đã châm ngòi cho hàng loạt cuộc điều tra, hé lộ những căng thẳng gia đình, xung đột doanh nghiệp và những thao túng kỹ thuật số. </p>
+</div>
+
+
+<div class="slide">
+<h1>Hồ Sơ Các Nghi Phạm</h1>
+<h2><b>Minh Cưa Cưa</b></h2>
+
+<p>
+
+<img class="victim-img" src="https://i.pinimg.com/736x/a3/84/e6/a384e632212df710c414bfed684acc2b.jpg">
+<b>Tuổi:</b> 45<br>
+
+<b>Quan hệ:</b> Vợ của nạn nhân<br>
+
+<b>Ngoại phạm:</b> Khẳng định rằng mình đang đọc sách trong vườn, nhưng không có nhân chứng xác nhận lời khai này.<br>
+
+<b>Động cơ có thể:</b><br>
+- Mâu thuẫn hôn nhân <br>
+- Nghi ngờ ngoại tình<br>
+- Tranh chấp tài chính<br>
+
+<b>Ghi chú thêm:</b> Có tiền sử các mối quan hệ phức tạp và đã bị nhìn thấy đang tranh cãi với Khánh vài ngày trước khi xảy ra vụ án.
+</p>
+<h2><b>Phùng Mĩxi</b></h2>
+<p>
+<img class="victim-img" src="https://i.pinimg.com/736x/4b/a8/50/4ba85050bdb65d49d3576acc54cd2f74.jpg">
+<b>Tuổi:</b> 28 <br>
+
+<b>Quan hệ:</b> Con trai của nạn nhân<br>
+
+<b>Ngoại phạm:</b> Khẳng định đang ở quán bar, nhưng dữ liệu camera và lời khai của khách tại quán khiến sự hiện diện của anh ta bị nghi ngờ.<br>
+
+<b>Động cơ có thể:</b><br>
+
+- Xung đột gia đình<br>
+- Bất đồng về quyền thừa kế<br>
+
+<b>Ghi chú thêm:</b>
+Mĩxi có tiền sử hành vi bốc đồng và từng được thấy trong các cuộc tranh cãi gay gắt với cha mình.
+</p>
+
+<h2><b>Doanh Bé Bỏng</b> </h2>
+
+<p>
+<img class="victim-img" src="https://i.pinimg.com/474x/62/1d/2e/621d2e137976e789fabbad4c5cde7b3e.jpg">
+<b>Tuổi:</b> 32<br>
+
+<b>Quan hệ:</b> Trợ lý cá nhân của Khánh Chim to<br>
+
+<b>Ngoại phạm:</b> Khẳng định rời khỏi dinh thự lúc <b>19h</b> nhưng hình ảnh từ camera an ninh cho thấy cô quay lại lúc <b>21h</b>.<br>
+
+<b>Động cơ có thể:</b><br>
+
+- Liên quan đến tống tiền tài chính<br>
+- Bí mật doanh nghiệp<br>
+
+<b>Ghi chú thêm:</b>
+Cô nắm giữ những thông tin nhạy cảm có thể làm ảnh hưởng đến các thỏa thuận trị giá hàng tỷ đô la.
+</p>
+<h2><b>Đế Tái Chanh</b> </h2>
+<p>
+<img class="victim-img" src="https://i.pinimg.com/736x/a5/51/06/a55106382ec1831689ff620b93ecc51a.jpg">
+<b>Tuổi:</b> 55<br>
+
+<b>Quan hệ:</b> Đối tác kinh doanh và bạn lâu năm của Khánh<br>
+
+<b>Ngoại phạm:</b> Khai rằng đang tham gia một cuộc họp trực tuyến, nhưng dữ liệu cho thấy có <b>khoảng trống 40 phút</b> trong cuộc gọi.<br>
+
+<b>Động cơ có thể:</b><br>
+
+- Xung đột thương mại<br>
+- Bất đồng hợp đồng<br>
+- Gian lận tài chính tiềm ẩn<br>
+
+<b>Ghi chú thêm:</b>
+Đế có quyền truy cập vào thông tin nội bộ và từng tham gia vào các cuộc đàm phán gây tranh cãi.</p>
+</div>
+
+<div class="slide">
+<h1>Hiện Trường Vụ Án</h1>
+<p>Văn phòng nơi xảy ra vụ sát hại có dấu hiệu rõ ràng của một cuộc vật lộn và hỗn loạn . Cách sắp xếp đồ đạc cho thấy hung thủ có thể đã cố tình gây nhiễu cuộc điều tra bằng cách để lại các manh mối mơ hồ.<br><br>
+
+<b>Các yếu tố được tìm thấy:</b><br><br>
+
+- Một ly whisky  chỉ có dấu vân tay của Khánh<br>
+- Một con dao găm dính máu được đặt ở vị trí có tính toán<br>
+- Dấu bàn chân nam và nữ, cho thấy có thể có nhiều hơn một người liên quan<br>
+- Một cửa sổ mở hé, có thể được dùng làm lối vào hoặc đường tẩu thoát</p>
+
+<b>Hình minh họa:</b><br>
+<img src="https://i.pinimg.com/736x/59/15/6a/59156a8778a4fc4d10d108aa13098eb3.jpg"
+style="width:100%; height:auto;">
+</div>
+
+<div class="slide">
+<h1>Bằng Chứng Bổ Sung và Kỹ Thuật Số</h1>
+<h2>Ảnh chụp cuộc trò chuyện trên điện thoại</h2>
+<p> Thu hồi từ điện thoại của nạn nhân, một ảnh chụp màn hình cho thấy một cuộc trò chuyện bí ẩn ngay trước thời điểm xảy ra vụ án.<br><br>
+
+Một tin nhắn đã bị xóa lúc 20h30, cho thấy có thể đã diễn ra một cuộc trao đổi bí mật và khẩn cấp. </p>
+
+<h2>Tiêu đề báo chí</h2>
+<p>Các tờ báo địa phương đăng nhiều tiêu đề gây chú ý, nhấn mạnh không chỉ vụ án mạng mà còn cả những tin đồn về âm mưu nội bộ trong gia đình Blackwood và xung đột doanh nghiệp. </p>
+
+<h2> Bài đăng trên mạng xã hội </h2>
+<p> Nhiều bài đăng trên mạng xã hội đưa ra các giả thuyết và thuyết âm mưu, cho rằng có thể tồn tại một liên minh giữa những nhân vật có ảnh hưởng trong giới doanh nghiệp và tội phạm.</p>
+</div>
+
+<div class="slide">
+<h1>Báo cáo giám định và tài liệu</h1> 
+<h2>Báo cáo pháp y</h2>
+<p> Báo cáo pháp y kết luận rằng con dao găm dùng trong vụ án đã bị can thiệp để loại bỏ dấu vết DNA, cho thấy có nỗ lực đánh lạc hướng cuộc điều tra.<br> <br>
+Ngoài ra còn phát hiện các hạt hóa học bất thường trong vết máu, gợi ý việc sử dụng các chất hóa học.
+  </p>
+
+<h2>Báo cáo tài chính</h2>
+<p> Phân tích chi tiết các giao dịch tài chính của Richard cho thấy những chuyển động đáng ngờ trong những ngày trước vụ án.<br><br>
+
+Có các khoản chuyển tiền không xác định và sự thất thoát quỹ, cho thấy khả năng tồn tại gian lận và tống tiền liên quan đến các thành viên thân cận trong gia đình và đối tác kinh doanh.
+  </p>
+
+<h2>Email được mã hóa</h2>
+<p> Các email được mã hóa đã được khôi phục từ máy chủ công ty, cho thấy sự tồn tại của một mạng lưới liên lạc bí mật giữa những cá nhân cấp cao.<br><br>
+Phân tích sơ bộ cho thấy thông tin mật đã được trao đổi ngay trước thời điểm vụ án xảy ra. </p>
+    
+</div>
+
+<div class="slide">
+
+<h1>Lời khai của nhân chứng</h1>
+<h9>nếu không hiện full thì ấn vào nhé </h9>
+
+<div class="witness-container">
+
+<div class="witness-card" onclick="openWitness(0)">
+<h3>Người làm vườn</h3>
+<p>Khẳng định đã nhìn thấy một nhân vật đáng ngờ gần cửa sổ văn phòng khoảng 21h30 nhưng mô tả không đầy đủ.</p>
+</div>
+
+<div class="witness-card" onclick="openWitness(1)">
+<h3>Người giúp việc</h3>
+<p>Nói rằng đã nghe thấy một cuộc tranh cãi dữ dội giữa Khánh và một người đàn ông lạ ngay trước khi sự việc xảy ra.</p>
+</div>
+
+<div class="witness-card" onclick="openWitness(2)">
+<h3>Người hàng xóm</h3>
+<p>Nghe tiếng động lớn</p>
+</div>
+
+<div class="witness-card" onclick="openWitness(3)">
+<h3>Nguồn tin ẩn danh</h3>
+<p>Cung cấp thông tin bí mật</p>
+</div>
+
+
+</div>
+</div>
+
+<div class="slide">
+
+<h1>Dòng thời gian và phân tích sự kiện</h1>
+
+<p><b>Trình tự các sự kiện dựa trên lời khai, bằng chứng kỹ thuật số và phân tích pháp y:</b></p>
+
+<p>
+<b>18h45:</b> Cuộc họp cuối cùng giữa Khánh và các giám đốc điều hành<br><br>
+
+<b>19h00:</b> Doanh nói đã rời khỏi dinh thự; dữ liệu truy cập cho thấy hoạt động bất thường<br><br>
+
+<b>19h30:</b> Minh bị thấy đang tranh cãi gay gắt với cha<br><br>
+
+<b>20h00:</b> Bắt đầu các tương tác đáng ngờ trên điện thoại của nạn nhân<br><br>
+
+<b>20h30:</b> Tin nhắn bị xóa khỏi điện thoại<br><br>
+
+<b>21h00:</b> Nhân chứng báo cáo có nhiều di chuyển quanh văn phòng<br><br>
+
+<b>21h30:</b> Người làm vườn nhìn thấy nhân vật đáng ngờ gần cửa sổ<br><br>
+
+<b>21h50:</b> Người hàng xóm nghe tiếng động lớn<br><br>
+
+<b>22h00:</b> Thời điểm tử vong ước tính dựa trên bằng chứng pháp y<br><br>
+
+<b>Sau 22h00:</b> Phát hiện hoạt động kỹ thuật số và giao dịch tài chính đáng ngờ.
+</p>
+
+</div>
+
+
+<div class="slide">
+
+<h1>Nhật ký của nạn nhân và thư từ</h1>
+
+<p>
+Các đoạn trích từ nhật ký cá nhân của Khánh Chim to đã được tìm thấy và tiết lộ:
+</p>
+
+<p>
+- Nỗi lo lắng<br>
+- Sự nghi ngờ<br>
+- Những mối đe dọa tiềm tàng
+</p>
+
+<p>
+Ngoài ra, thư từ giữa ông và các đối tác thân cận cho thấy sự liên quan của những lợi ích mờ ám.
+</p>
+<b>Hình minh họa:</b><br>
+<img src="https://i.pinimg.com/736x/3c/5e/50/3c5e50f07734a85ffb9c81e9fe73f396.jpg"
+style="width:100%; height:auto;">
+
+</div>
+<div class="slide">
+
+<h1>Phân tích pháp y kỹ thuật số và mạng</h1>
+
+<p>
+Các chuyên gia kỹ thuật số đã điều tra thiết bị điện tử và mạng của dinh thự phát hiện:
+</p>
+
+<p>
+- Dấu vết truy cập trái phép<br>
+- Nỗ lực thao túng dữ liệu
+</p>
+
+<p>
+Một máy tính bị hack trong phòng máy chủ tiết lộ các  nhật ký truy cập đáng ngờ.
+</p>
+ 
+</div>
+<div class="slide">
+
+<h1>Thử thách dành cho điều tra viên</h1>
+
+<p>Hãy phân tích các câu hỏi sau để tiếp tục điều tra:</p>
+
+<p>
+1. Mối liên hệ giữa các giao dịch tài chính đáng ngờ và bằng chứng kỹ thuật số là gì?<br><br>
+
+2. Làm thế nào để dung hòa các lời khai mâu thuẫn với các báo cáo pháp y?<br><br>
+
+3. Nhật ký và thư từ ảnh hưởng thế nào đến dòng thời gian của sự kiện?<br><br>
+
+4. Những sự không khớp nào xuất hiện giữa lời khai của nghi phạm và bằng chứng giám định?<br><br>
+
+5. Những manh mối nào có thể rút ra từ bản đồ dinh thự để xác định các tuyến tẩu thoát?<br><br>
+
+6. Các email mã hóa có thể tiết lộ mức độ nào về mạng lưới thông đồng giữa các bên liên quan?
+</p>
+
+</div>
+
+<div class="slide">
+
+<h1>Lời giải vụ án</h1>
+
+<h2>Chọn số lượng hung thủ</h2>
+
+<p>⚠ Hãy chọn nghi phạm trước khi mở lời giải.</p>
+<div class="killer-panel">
+
+<select id="killerCount" onchange="createSelectors()">
+<option value="">-- Chọn --</option>
+<option value="1">1 người</option>
+<option value="2">2 người</option>
+<option value="3">3 người</option>
+<option value="4">4 người</option>
+</select>
+
+<div id="killerSelectors"></div>
+
+<button onclick="checkSuspects()">Xác nhận nghi phạm</button>
+
+</div>
+
+<p><b>⚠ LƯU Ý:</b> Phần sau chứa <b>lời giải đầy đủ của vụ án</b>.<br><br>
+Chỉ nhập mật khẩu khi bạn thực sự muốn xem kết luận cuối cùng.</p>
+
+<input type="password" id="casePass" placeholder="Nhập mật khẩu..." 
+style="padding:10px;font-size:16px;border-radius:6px;border:none;">
+
+<button onclick="checkPass()">Mở lời giải</button>
+
+<div id="solution" style="display:none;margin-top:30px;">
+
+<h2>Kết luận điều tra</h2>
+
+<p>
+Sau khi phân tích toàn diện tất cả bằng chứng, lời khai, dữ liệu kỹ thuật số và báo cáo pháp y, kết luận rằng trách nhiệm cho cái chết của Khánh Chim To thuộc về một liên minh giữa Doanh Bé Bỏng và Đế Tái Chanh.
+</p>
+
+<h2>Lời giải chi tiết</h2>
+
+<p>
+- Hình ảnh an ninh và dữ liệu kỹ thuật số chứng minh <b>Doanh có mặt trong dinh thự sau thời gian cô khai</b> và tham gia các liên lạc mã hóa đáng ngờ.<br><br>
+
+- <b>Đế Tái Chanh</b> với khoảng trống trong cuộc họp trực tuyến, có động cơ tài chính mạnh mẽ và khả năng thao túng tình hình.<br><br>
+
+- Phân tích pháp y của con dao găm và dấu vết hóa học cho thấy có nỗ lực cố ý đánh lạc hướng cuộc điều tra..<br><br>
+
+- Nhật ký của Khánh và các email mã hóa tiết lộ mạng lưới thông đồng giữa các nghi phạm.
+</p>
+
+<p><b>Kết luận:</b><br>
+Doanh Bé Bỏng và Đế Tái Chanh đã hợp tác với nhau để dàn dựng vụ sát hại Khánh Chim to (vì ganh tị chim to).</p>
+
+</div>
+  
+</div>
+
+</div>
+
+
+<div class="controls">
+<button id="prev">⬅</button>
+<button id="next">➡</button>
+</div>
+
+<script>
+let realKillers = ["Đế Tái Chanh","Doanh Bé Bỏng"]
+let current = 0
+
+const slides = document.querySelectorAll(".slide")
+const container = document.getElementById("container")
+
+document.getElementById("next").onclick = () => {
+if(current < slides.length - 1){
+current++
+update()
+}
+}
+
+document.getElementById("prev").onclick = () => {
+if(current > 0){
+current--
+update()
+}
+}
+
+function update(){
+container.style.transform = "translateX(-" + current * 100 + "vw)"
+}
+
+let witnessData = [
+
+{
+name:"Người làm vườn",
+info:"Khẳng định đã nhìn thấy một nhân vật đáng ngờ gần cửa sổ văn phòng khoảng 21h30 nhưng không thể nhận dạng rõ."
+},
+
+{
+name:"Người giúp việc",
+info:"Nghe thấy một cuộc tranh cãi dữ dội giữa Khánh và một người đàn ông lạ ngay trước khi sự việc xảy ra."
+},
+
+{
+name:"Người hàng xóm",
+info:"Cho biết đã nghe thấy một tiếng động mạnh và vang lớn, sau đó là sự im lặng đáng lo ngại  vào khoảng 21h50."
+},
+
+{
+name:"Nguồn tin ẩn danh",
+info:"Một nguồn tin bí mật đã cung cấp chi tiết về những hoạt động đáng ngờ trong dinh thự trong những giờ trước vụ án."
+}
+
+]
+
+let currentWitness = 0
+
+function openWitness(i){
+
+currentWitness = i
+
+document.getElementById("witnessName").innerText = witnessData[i].name
+document.getElementById("witnessInfo").innerText = witnessData[i].info
+
+document.getElementById("witnessModal").style.display="flex"
+
+}
+
+function nextWitness(){
+
+currentWitness++
+
+if(currentWitness >= witnessData.length){
+currentWitness = 0
+}
+
+openWitness(currentWitness)
+
+}
+
+function closeWitness(){
+
+document.getElementById("witnessModal").style.display="none"
+
+}
+
+let suspects = [
+"Phùng Mĩxi",
+"Đế Tái Chanh",
+"Doanh Bé Bỏng",
+"Minh Cưa Cưa"
+]
+
+function createSelectors(){
+
+let count = document.getElementById("killerCount").value
+let container = document.getElementById("killerSelectors")
+
+container.innerHTML=""
+
+for(let i=0;i<count;i++){
+
+let select = document.createElement("select")
+select.className="suspectSelect"
+
+let option = document.createElement("option")
+option.text="-- Chọn nghi phạm --"
+select.appendChild(option)
+
+suspects.forEach(name=>{
+let opt=document.createElement("option")
+opt.value=name
+opt.text=name
+select.appendChild(opt)
+})
+
+container.appendChild(select)
+container.appendChild(document.createElement("br"))
+container.appendChild(document.createElement("br"))
+
+}
+
+}
+
+function checkSuspects(){
+
+let selects = document.querySelectorAll(".suspectSelect")
+
+let chosen=[]
+
+selects.forEach(s=>{
+chosen.push(s.value)
+})
+
+if(chosen.includes("")){
+showResult("⚠ Hãy chọn đầy đủ nghi phạm","wrong")
+return
+}
+
+let correct = true
+
+if(chosen.length !== realKillers.length){
+correct = false
+}else{
+
+realKillers.forEach(k=>{
+if(!chosen.includes(k)){
+correct = false
+}
+})
+
+}
+
+if(correct){
+showResult("Giỏi vậy vợ ơi :33","correct")
+}
+else{
+showResult("Á HÁ HÁ SAI RỒI =)))","wrong")
+}
+
+document.getElementById("passSection").style.display="block"
+
+}
+
+function checkPass(){
+
+let pass = document.getElementById("casePass").value
+
+if(pass === "1 đến 10"){
+document.getElementById("solution").style.display="block"
+}
+else{
+alert("Lêu lêu sai rồi -)")
+}
+
+}
+
+function showResult(text,type){
+
+let popup = document.getElementById("resultPopup")
+let box = document.getElementById("resultText")
+
+box.innerHTML = text
+
+box.classList.remove("result-correct","result-wrong")
+
+if(type==="correct"){
+box.classList.add("result-correct")
+}else{
+box.classList.add("result-wrong")
+}
+
+popup.style.display="flex"
+
+setTimeout(()=>{
+popup.style.display="none"
+},3000)
+
+}
+
+</script>
+<div class="witness-modal" id="witnessModal">
+
+<div class="witness-box">
+
+<span class="witness-close" onclick="closeWitness()">✖</span>
+
+<h2 id="witnessName"></h2>
+
+<p id="witnessInfo"></p>
+
+<button class="next-witness" onclick="nextWitness()">Nhân chứng tiếp</button>
+
+</div>
+
+</div>
+
+<div id="resultPopup" class="result-popup">
+<div class="result-box" id="resultText"></div>
+</div>
+</body>
+</html>
