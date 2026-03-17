@@ -133,7 +133,14 @@ text-align:center;
 
 font-family:'YouMurder', serif;
 
-font-size:clamp(40px,6vw,70px);
+/* TO HƠN */
+font-size:clamp(55px,9vw,110px);
+
+/* GIÃN CHỮ */
+letter-spacing:6px;
+
+/* THÊM GIÃN DÒNG (tránh bị dính) */
+line-height:1.2;
 
 background:linear-gradient(45deg,#ff4444,#ff1493,#8a2be2);
 
@@ -145,7 +152,7 @@ background-clip:text;
 
 animation:glow 2s ease-in-out infinite alternate;
 
-margin-bottom:20px;
+margin-bottom:25px;
 
 }
 
@@ -285,6 +292,54 @@ margin-top:20px;
 margin-bottom:8px;
 }
 
+ /* MOBILE (<=768px) */
+@media (max-width:768px){
+
+.container{
+padding:120px 15px 40px;
+}
+
+/* NAVBAR xuống dòng */
+.nav-menu{
+flex-wrap:wrap;
+gap:15px;
+}
+
+/* TITLE nhỏ lại */
+.title{
+font-size:clamp(32px,8vw,50px);
+letter-spacing:2px;
+}
+
+/* TEXT dễ đọc hơn */
+.desc{
+font-size:16px;
+padding:0 5px;
+}
+
+/* BUTTON gọn hơn */
+.btn{
+padding:12px 20px;
+font-size:14px;
+}
+
+/* GUIDE BUTTON xếp dọc */
+.guide-menu{
+flex-direction:column;
+gap:12px;
+}
+
+.guide-btn{
+width:100%;
+}
+
+/* BOX */
+.guide-box{
+font-size:15px;
+line-height:1.6;
+}
+
+}
 </style>
 
 </head>
