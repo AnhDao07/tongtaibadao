@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Char - Ma Sói</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family: "Times New Roman", serif;
+background:#fff;
+color:#111;
+min-height:100vh;
+}
+
+/* NAVBAR */
+.navbar{
+background:#000;
+padding:15px;
+position:fixed;
+width:100%;
+top:0;
+z-index:10;
+}
+
+.nav-menu{
+display:flex;
+justify-content:center;
+gap:30px;
+list-style:none;
+}
+
+.nav-menu a{
+color:#fff;
+text-decoration:none;
+font-weight:600;
+}
+
+.nav-menu a:hover{
+text-decoration:underline;
+}
+
+/* MAIN */
+.container{
+max-width:1000px;
+margin:auto;
+padding:120px 20px;
+text-align:center;
+}
+
+/* SEARCH */
+.search-box{
+margin-bottom:40px;
+}
+
+.search-box input{
+width:60%;
+padding:12px 20px;
+border-radius:30px;
+border:2px solid #000;
+outline:none;
+font-size:16px;
+}
+
+/* TEAM BUTTONS */
+.teams{
+display:flex;
+justify-content:center;
+gap:40px;
+flex-wrap:wrap;
+}
+
+.team{
+width:110px;
+height:110px;
+border-radius:50%;
+border:2px solid #000;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+transition:0.3s;
+font-weight:bold;
+}
+
+.team:hover{
+background:#000;
+color:#fff;
+transform:scale(1.08);
+}
+
+/* POPUP */
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:20;
+}
+
+.popup-content{
+background:#fff;
+color:#000;
+padding:15px;
+width:95%;
+max-width:900px;
+height:85vh;
+border-radius:10px;
+display:flex;
+flex-direction:column;
+position:relative;
+}
+
+.close-btn{
+position:absolute;
+top:10px;
+right:15px;
+cursor:pointer;
+font-size:18px;
+}
+
+/* BODY */
+.popup-body{
+display:flex;
+gap:15px;
+flex:1;
+overflow:hidden;
+margin-top:10px;
+}
+
+/* LIST */
+.char-list{
+width:35%;
+overflow-y:auto;
+border-right:1px solid #ccc;
+}
+
+.char-list li{
+padding:10px;
+cursor:pointer;
+border-radius:6px;
+transition:0.2s;
+}
+
+.char-list li:hover{
+background:#000;
+color:#fff;
+}
+
+/* ACTIVE (ĐÃ FIX ĐẸP) */
+.char-list li.active{
+background:#000;
+color:#fff;
+box-shadow:0 0 10px rgba(0,0,0,0.4);
+}
+
+/* INFO */
+.char-info{
+flex:1;
+overflow-y:auto;
+padding-left:10px;
+}
+
+.char-info h3{
+margin-bottom:10px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+.popup-content{
+width:100%;
+height:100%;
+border-radius:0;
+}
+
+.popup-body{
+flex-direction:column;
+}
+
+.char-list{
+width:100%;
+max-height:40%;
+border-right:none;
+border-bottom:1px solid #ccc;
+}
+
+.char-info{
+max-height:60%;
+padding:10px 0;
+}
+
+.search-box input{
+width:90%;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+<ul class="nav-menu">
+<li><a href="masoi.html">Giới Thiệu</a></li>
+<li><a href="char.html">Char</a></li>
+<li><a href="artifacts.html">Cổ Vật</a></li>
+</ul>
+</nav>
+
+<main class="container">
+
+<h1>Danh sách nhân vật</h1>
+
+<div class="search-box">
+<input type="text" placeholder="facebook.com/61582242182174">
+</div>
+
+<div class="teams">
+<div class="team" onclick="openPopup('dan')">Dân</div>
+<div class="team" onclick="openPopup('soi')">Sói</div>
+<div class="team" onclick="openPopup('phe3')">Phe 3</div>
+</div>
+
+</main>
+
+<div id="popup" class="popup">
+<div class="popup-content">
+
+<span class="close-btn" onclick="closePopup()">❌</span>
+
+<h2 id="popup-title"></h2>
+
+<div class="popup-body">
+
+<ul class="char-list" id="char-list"></ul>
+
+<div class="char-info" id="char-info">
+<h3>Chọn nhân vật</h3>
+<p>Ấn vào bên trái để xem thông tin</p>
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+const data = {
+dan: [{
+name:"Dân Làng",
+info:"Không có chức năng gì đặc biệt."
+},
+
+{
+name:"Tiên Tri",
+info:"Mỗi đêm, khi được gọi dậy Tiên Tri sẽ chọn một người. Nếu người đó là Sói Quản trò sẽ bảo Sói."
+},
+
+{
+name:"Thợ Săn",
+info:"Khi thợ săn chết, dù là dưới bất kỳ hình thức nào cũng có thể chọn một người chơi khác và kéo hắn chết cùng."
+},
+
+{
+name:"Thầy Đồng",
+info:"Mỗi đêm, Thầy Đồng có thể chọn một trong những người chơi chết gần nhất để trò chuyện cùng họ trong một đêm (quản trò lập box âm ti bao gồm thầy đồng và người chơi chết gần nhất đó). Đồng thời, Thầy Đồng có cơ hội hồi sinh bất cứ một người nào mình muốn trong đêm. Chức năng hồi sinh chỉ được sử dụng duy nhất một lần trong ván."
+},
+
+{
+name:"Bảo Vệ",
+info:"Mỗi đêm khi được gọi dậy, Bảo Vệ sẽ được chọn một người. Không được Bảo Vệ một người trong hai đêm liên tiếp. Lưu ý: Người được bảo vệ vẫn có thể chết do bị Phù Thủy đầu độc."
+},
+
+{
+name:"Kẻ Phù Phép",
+info:"Mỗi đêm, sẽ chọn một người chơi làm cho người đó không thể nói chuyện và bỏ phiếu vào sáng hôm sau."
+},
+
+{
+name:"Phù Thủy",
+info:"Phù Thủy có hai bình thuốc: Một bình dùng để cứu một người, còn một bình dùng để giết một người. Phù Thủy biết người bị giết bởi Sói đêm đó, và Phù Thủy được quyền quyết định xem có cứu người ấy hay không. Sau đó, quản trò sẽ hỏi xem Phù Thủy có dùng bình Giết giết ai hay không. Một khi đã dùng thì Phù Thủy sẽ mất đi bình đó. Lưu ý: Nếu đêm đó Bảo Vệ đã Bảo Vệ đúng người thì không ai chết cả."
+},
+
+{
+name:"Thần Tình Yêu (Cupid)",
+info:"Trong đêm đầu tiên chọn hai người chơi để họ làm tình nhân của nhau. Nếu hai người thuộc hai phe khác nhau (Sói với Dân) thì họ thành phe thứ ba, sẽ thắng khi là hai người sống sót cuối cùng."
+},
+
+{
+name:"Già Làng",
+info:"Tránh được 1 lần cắn của Sói (Tức là sói phải cắn 2 lần Già Làng mới chết). Tuy nhiên, nếu bị treo cổ, bị Thợ Săn bắn hoặc bị Phù Thủy giết thì Già Làng vẫn chết ngay lập tức. Khi Già Làng chết, tất cả các chức năng của dân đều bị mất vĩnh viễn."
+},
+
+{
+name:"Quản Ngục",
+info:"Bắt đầu từ đêm thứ 2, bạn được gọi dậy và chọn nhốt 1 người và trò chuyện với người đó thông qua quản trò và phế chức năng của họ trong đêm. Bạn có một viên đạn và có thể sử dụng để giết người trong tù nếu bạn thấy khả nghi. Không thể giam chính bản thân hoặc cùng một người hai đêm liên tiếp."
+},
+
+{
+name:"Kẻ Ngốc",
+info:"Kẻ ngốc là dân làng bình thường. Tuy nhiên nếu bị treo cổ thì kẻ ngốc không chết, và đến cuối ván, Kẻ Ngốc sẽ mất phiếu bầu, tuy nhiên vẫn có thể tham gia bàn luận cùng mọi người."
+},
+
+{
+name:"Oan Nhân",
+info:"Khi số phiếu bầu treo huề, thay vì không ai bị treo cổ thì Oan nhân sẽ chết. Tuy nhiên trước lúc chết anh ta được chọn ai là người bị lên giàn trong sáng hôm sau."
+},
+
+{
+name:"Cáo",
+info:"Mỗi đêm, cáo có thể chọn 1 nhóm 3 người sát nhau bằng cách chọn người ở giữa. Quản trò sẽ báo hiệu cho cáo biết trong nhóm đó có sói hay không. Nếu có, cáo có thể tiếp tục sử dụng năng lực vào đêm sau. Nếu không, cáo sẽ mất đi năng lực vĩnh viễn."
+},
+
+{
+name:"Gấu",
+info:"Mỗi sáng sau khi công bố người chết xong. Nếu có sói ngồi sát bên cạnh Gấu (chỉ tính những người còn sống), thì quản trò sẽ thông báo cho làng: “Gấu đang cảm thấy nguy hiểm”."
+},
+
+{
+name:"Nguyệt Nữ",
+info:"Vào mỗi đêm, có thể chọn 1 người và ngủ, người đó sẽ bị vô hiệu hóa kỹ năng trong đêm đó, không được chọn 1 người trong 2 đêm liên tiếp. (ngủ với sói/phe 3 = die trừ ngố)."
+},
+
+{
+name:"Cổ Hoặc Sư",
+info:"Mỗi đêm, chọn 1 người để mê hoặc, nếu đêm đó bạn chết, người bạn mê hoặc sẽ chết thay cho bạn. Không được chọn 1 người 2 đêm liên tiếp."
+},
+
+{
+name:"Dược Sỹ",
+info:"Dược sỹ có 2 bình là Mê Hồn Dược và Hồi Phục Dược. Mỗi bình chỉ được dùng 1 lần trong trò chơi. Mê Hồn Dược dùng để làm cho 1 người mất quyền biểu quyết và quyền được nói trong 1 ngày. Hồi Phục Dược: nếu ném trúng Phù Thủy thì Phù Thùy được hồi phục bình thuốc Cứu."
+},
+
+{
+name:"Thích Khách",
+info:"Cứ mỗi 2 đêm, nếu tổng số phiếu chỉ vào Thích Khách đạt ít nhất 4, Thích Khách có thể chọn 1 người bất kỳ để giết."
+},
+
+{
+name:"Kẻ Báo Thù",
+info:"Đêm đầu tiên, bạn sẽ chọn theo phe sói hoặc theo phe dân. Nếu chọn phe sói, sẽ trở thành sói. Khi bạn chết, chọn 1 người, nếu người đó là dân thì sẽ chết ngay lập tức. Nếu chọn phe dân, sẽ trở thành dân. Khi bạn chết, chọn 1 người, nếu người đó là sói thì sẽ chết ngay lập tức."
+},
+
+{
+name:"Ảnh Tử",
+info:"Đêm đầu tiên chọn 1 người, nếu người đó chết, Ảnh Tử sẽ thành nhân vật đó."
+},
+
+{
+name:"Con Bệnh",
+info:"Nếu Sói giết bạn, vào đêm kế tiếp, Sói không thể giết người khác."
+},
+
+{
+name:"Lực Sỹ",
+info:"Nếu bị Sói cắn, bạn sẽ sống sót thêm 1 ngày nữa."
+},
+
+{
+name:"Tiên Tri Tập Sự",
+info:"Khi Tiên Tri chết, Tiên Tri Tập Sự sẽ trở thành Tiên Tri."
+},
+
+{
+name:"Bà Già",
+info:"Mỗi đêm, chọn 1 người và người đó phải rời khỏi làng vào sáng hôm sau. Người rời đi sẽ không được bỏ phiếu hoặc bị bỏ phiếu."
+},
+
+{
+name:"Ông Già",
+info:"Bạn sẽ chết vào đêm thứ X (X = số lượng Sói ban đầu + 1)."
+},
+
+{
+name:"Người Yêu Hòa Bình",
+info:"Luôn biểu quyết cứu. Bạn có thể nói bất cứ điều gì khi tranh luận, nhưng khi biểu quyết thì chỉ được chọn cứu."
+},
+
+{
+name:"Bác Sỹ Điên",
+info:"Mỗi đêm, bạn sẽ chọn 2 người chơi bất kỳ. Nếu 2 người đó là: Sói - Dân: thì người dân chết; Sói - Chức Năng: thì Sói chết; Dân - Chức Năng: thì Chức Năng chết. Nếu không thuộc 3 trường hợp trên thì đều sống."
+}
+
+],
+
+soi: [
+
+{
+name:"Sói Thường",
+info:"Mỗi đêm thức dậy, các Sói sẽ biết mặt lẫn nhau và sẽ cùng thống nhất giết một người. Sói có quyền không giết, và cũng có quyền tự giết lẫn nhau."
+},
+
+{
+name:"Sói Trùm",
+info:"Mỗi đêm sẽ dậy chung với sói. Nhưng khi sói thường hoặc con hoang hoặc sói lai chết, nó sẽ dậy 1 mình và chọn giết thêm 1 nạn nhân khác. Nó không thể giết sói. (Nếu có nhân vật mang chức năng vô hiệu hóa tác động lên Sói Trùm, cả đàn ngày hôm đó không được cắn.)"
+},
+
+{
+name:"Sói Quỷ",
+info:"Mỗi đêm sẽ được Quản trò gọi dậy để hỏi có thực hiện chức năng không. Nếu đồng ý, nạn nhân đêm đó của Sói sẽ bị biến vĩnh viễn thành Sói kể từ đêm tiếp theo. Nếu người đó có chức năng, người đó vẫn được thực hiện."
+},
+
+{
+name:"Sói Lửa",
+info:"Khi sói đã chết ít nhất 1 con (không tính người chơi đổi phe), vào buổi tối có thể chọn 1 người và người đó sẽ mất năng lực vĩnh viễn. Khi có ít nhất 2 sói chết trong cùng 1 ngày, có thể thực hiện kỹ năng thêm 1 lần nữa. Không được tự đốt bản thân. Đêm nay đốt thì đêm sau mới có tác dụng."
+},
+
+{
+name:"Sói Băng",
+info:"Mỗi đêm, chọn 1 người và biến họ thành cục băng. Người đó không thể thực hiện chức năng đêm đó (nếu có) và nếu bị giết sẽ không chết (trừ trường hợp đặc biệt). Quản trò sẽ thông báo người bị đóng băng khi gọi dậy. Nếu đóng băng Sói Trùm, Tiên Tri có thể soi ra Sói Trùm vào đêm đó. Chức năng ban ngày không bị ảnh hưởng."
+},
+
+{
+name:"Sói Sida",
+info:"Sói sẽ chết vào đêm thứ tư. Nếu có chức năng nào tác động vào Sói Sida, người đó sẽ chết ngay trong đêm."
+},
+
+{
+name:"Sói Con",
+info:"Là Sói, thức dậy cùng với Sói. Khi bạn chết, đêm sau, Sói sẽ giết 2 người để trả thù. Nếu bị Quản Ngục bắn chết trong đêm, Sói được cắn 2 người ngay lập tức."
+},
+
+{
+name:"Phản Bội",
+info:"Là Dân nhưng theo phe Sói, không dậy cùng Sói. Đêm đầu tiên sẽ được Quản Trò gọi dậy và cho biết ai là Sói."
+},
+
+{
+name:"Sói Tiên Tri",
+info:"Là Sói, thức dậy cùng với Sói. Sau đó dậy riêng để soi 1 người xem có phải là Tiên Tri của Dân làng không."
+},
+
+{
+name:"Lycan",
+info:"Ban đầu là Dân, nhưng khi bị Tiên Tri soi trúng sẽ biến thành Sói từ hôm sau."
+},
+
+{
+name:"Sói Đá",
+info:"Là Sói, thức dậy cùng với Sói. Bạn sẽ không được phép giết người trong lượt dậy của Sói nếu bạn là con Sói cuối cùng."
+},
+
+{
+name:"Con Hoang",
+info:"Đêm đầu tiên chọn 1 người làm Hình Tượng. Nếu Hình Tượng chết, con hoang sẽ hóa thành Sói vĩnh viễn. Trước đó là Dân, sau đó thắng cùng Sói."
+}
+
+], 
+phe3: [
+
+{
+name:"Vampire",
+info:"Mỗi đêm, Vampire cắn một người và biến người đó thành Vampire con (không thể biến sói). Khi Vampire chết, tất cả Vampire con cũng chết theo. Vampire con vẫn dùng được chức năng cũ, trừ Con Hoang và Kẻ Thổi Sáo."
+},
+
+{
+name:"Tà Đạo",
+info:"Chọn 2 người trong đêm đầu tiên. Nếu họ chết và bạn còn sống đến cuối game thì bạn thắng."
+},
+
+{
+name:"Sói Trắng",
+info:"Thức dậy cùng Sói. Cứ hai đêm một lần có thể giết một Sói khác. Nhiệm vụ là trở thành người duy nhất còn sống."
+},
+
+{
+name:"Kẻ Thổi Sáo",
+info:"Mỗi đêm mê hoặc 2 người. Những người bị mê hoặc sẽ biết nhau. Bạn thắng khi tất cả người còn sống đều bị mê hoặc. Không bị sói cắn chết."
+},
+
+{
+name:"Tin Tặc",
+info:"Mỗi đêm chọn một người để xâm nhập. Người đó không thể dùng kỹ năng, không nói, không bỏ phiếu và sẽ chết cuối ngày. Không thể hồi sinh. Bạn không bị sói giết. Thắng khi là người cuối cùng."
+},
+
+{
+name:"Thợ Săn Người",
+info:"Cố gắng treo cổ mục tiêu được chỉ định. Nếu mục tiêu chết theo cách khác thì trở lại làm dân làng."
+},
+
+{
+name:"Ngố",
+info:"Lừa dân treo cổ mình để giành chiến thắng."
+},
+
+{
+name:"Hậu / Vua",
+info:"Cho phép hỏi một người câu hỏi A/B. Trả lời đúng thì sống, sai thì chết."
+},
+
+{
+name:"Sát Thủ",
+info:"Mỗi đêm được gọi dậy để chọn giết một người. Không bị sói cắn chết."
+},
+
+{
+name:"Kẻ Phóng Hỏa",
+info:"Mỗi đêm có thể tẩm xăng 2 người hoặc thiêu những người đã bị tẩm trước đó. Không bị sói cắn chết."
+},
+
+{
+name:"Thiên Thần",
+info:"Nếu bạn chết trong đêm hoặc ngày đầu tiên, bạn thắng ngay. Nếu không, bạn trở thành dân làng bình thường."
+}
+
+]
+};
+
+function openPopup(type){
+document.getElementById("popup").style.display = "flex";
+
+let title = "";
+if(type === "dan") title = "Phe Dân";
+if(type === "soi") title = "Phe Sói";
+if(type === "phe3") title = "Phe Thứ 3";
+
+document.getElementById("popup-title").innerText = title;
+
+let list = document.getElementById("char-list");
+let info = document.getElementById("char-info");
+
+list.innerHTML = "";
+info.innerHTML = "<h3>Chọn nhân vật</h3><p>Ấn vào bên trái để xem thông tin</p>";
+
+data[type].forEach(char=>{
+let li = document.createElement("li");
+li.innerText = char.name;
+
+li.onclick = ()=>{
+document.querySelectorAll(".char-list li").forEach(e=>e.classList.remove("active"));
+li.classList.add("active");
+
+info.innerHTML = `
+<h3>${char.name}</h3>
+<p>${char.info}</p>
+`;
+
+// mobile auto scroll
+if(window.innerWidth <= 768){
+info.scrollIntoView({behavior:"smooth"});
+}
+};
+
+list.appendChild(li);
+});
+}
+
+function closePopup(){
+document.getElementById("popup").style.display = "none";
+}
+</script>
+
+</body>
+</html>
