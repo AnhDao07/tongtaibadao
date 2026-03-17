@@ -23,247 +23,118 @@ box-sizing:border-box;
 }
 
 body{
-
 font-family:"Times New Roman", serif;
-
-background: linear-gradient(135deg,#0a0a0a 0%,#1a0a1a 50%,#0a0a1a 100%);
-
-color:#e0e0e0;
-
+background:#fff;
+color:#000;
 min-height:100vh;
-
 overflow-x:hidden;
-
 }
 
+/* ❌ XÓA background màu mè */
 body::before{
-
-content:'';
-
-position:fixed;
-
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-background:
-radial-gradient(circle at 20% 80%,rgba(120,119,198,0.3),transparent 50%),
-radial-gradient(circle at 80% 20%,rgba(255,68,68,0.3),transparent 50%),
-radial-gradient(circle at 40% 40%,rgba(138,43,226,0.2),transparent 50%);
-
-z-index:-1;
-
-animation:bgShift 20s ease-in-out infinite;
-
+display:none;
 }
-
- 
 
 /* NAVBAR */
-
 .navbar{
-
-background:rgba(0,0,0,0.9);
-
+background:#fff;
 padding:15px;
-
 position:fixed;
-
 width:100%;
-
 top:0;
-
-border-bottom:1px solid rgba(255,68,68,0.3);
-
+border-bottom:1px solid #000;
 }
 
 .nav-menu{
-
 display:flex;
-
 justify-content:center;
-
 gap:30px;
-
 list-style:none;
-
+flex-wrap:wrap;
 }
 
 .nav-menu a{
-
-color:#ff4444;
-
+color:#000;
 text-decoration:none;
-
 font-weight:600;
-
 letter-spacing:1px;
-
-transition:0.3s;
-
 }
 
 .nav-menu a:hover{
-
-color:#ff1493;
-
-text-shadow:0 0 10px #ff4444;
-
+color:#666;
 }
 
 /* MAIN */
-
 .container{
-
 max-width:1000px;
-
 margin:auto;
-
 padding:140px 20px 60px;
-
 text-align:center;
-
 }
 
 /* TITLE */
-
 .title{
-
 font-family:'YouMurder', serif;
-
-/* TO HƠN */
 font-size:clamp(55px,9vw,110px);
-
-/* GIÃN CHỮ */
 letter-spacing:6px;
-
-/* THÊM GIÃN DÒNG (tránh bị dính) */
 line-height:1.2;
-
-background:linear-gradient(45deg,#ff4444,#ff1493,#8a2be2);
-
--webkit-background-clip:text;
-
--webkit-text-fill-color:transparent;
-
-background-clip:text;
-
-animation:glow 2s ease-in-out infinite alternate;
-
+color:#000;
 margin-bottom:25px;
-
-}
-
-@keyframes glow{
-
-from{filter:drop-shadow(0 0 10px #ff4444)}
-
-to{filter:drop-shadow(0 0 25px #ff1493)}
-
 }
 
 /* DESCRIPTION */
-
 .desc{
-
 font-size:18px;
-
-color:#ccc;
-
+color:#333;
 line-height:1.6;
-
 max-width:700px;
-
 margin:auto;
-
 }
 
 /* BUTTON */
-
 .btn{
-
 display:inline-block;
-
 margin-top:40px;
-
 padding:14px 30px;
-
-background:linear-gradient(45deg,#ff4444,#ff1493);
-
-color:white;
-
+background:#000;
+color:#fff;
 text-decoration:none;
-
-border-radius:10px;
-
+border:1px solid #000;
+border-radius:6px;
 font-weight:600;
-
-transition:0.3s;
-
 }
 
 .btn:hover{
-
-transform:translateY(-3px);
-
-box-shadow:0 0 20px rgba(255,68,68,0.6);
-
+background:#fff;
+color:#000;
 }
 
-
-
-.card:hover{
-
-transform:translateY(-8px);
-
-border-color:#ff1493;
-
-box-shadow:0 10px 30px rgba(255,68,68,0.4);
-
-}
-
-.card h3{
-
-color:#ff6666;
-
-margin-bottom:10px;
-
-}
-
-.card p{
-
-color:#ccc;
-
-font-size:14px;
-
-}
-
+/* GUIDE MENU */
 .guide-menu{
 margin-top:40px;
 display:flex;
 justify-content:center;
 gap:20px;
+flex-wrap:wrap;
 }
 
 .guide-btn{
 padding:12px 25px;
-background:linear-gradient(45deg,#ff4444,#ff1493);
-border:none;
-border-radius:8px;
-color:white;
+background:#000;
+border:1px solid #000;
+border-radius:6px;
+color:#fff;
 font-weight:600;
 cursor:pointer;
-transition:0.3s;
 font-family:'Be Vietnam Pro',sans-serif;
 }
 
 .guide-btn:hover{
-transform:translateY(-3px);
-box-shadow:0 0 15px rgba(255,68,68,0.6);
+background:#fff;
+color:#000;
 }
 
+/* GUIDE CONTENT */
 .guide-content{
 margin-top:30px;
 max-width:700px;
@@ -274,56 +145,51 @@ text-align:left;
 
 .guide-box{
 display:none;
-background:rgba(0,0,0,0.6);
+background:#fff;
 padding:20px;
-border-radius:10px;
-border:1px solid rgba(255,68,68,0.4);
+border-radius:6px;
+border:1px solid #000;
 }
 
+/* TEXT TRONG BOX = ĐEN TRẮNG */
 .guide-box h2{
-color:#ff6666;
+color:#000;
 margin-bottom:10px;
 }
 
 .guide-box h3{
 font-size:22px;
-color:#ff6666;
+color:#000;
 margin-top:20px;
 margin-bottom:8px;
 }
 
- /* MOBILE (<=768px) */
+.guide-box p{
+color:#000;
+line-height:1.6;
+}
+
+/* MOBILE */
 @media (max-width:768px){
 
 .container{
 padding:120px 15px 40px;
 }
 
-/* NAVBAR xuống dòng */
-.nav-menu{
-flex-wrap:wrap;
-gap:15px;
-}
-
-/* TITLE nhỏ lại */
 .title{
-font-size:clamp(32px,8vw,50px);
-letter-spacing:2px;
+font-size:clamp(40px,12vw,70px);
+letter-spacing:4px;
 }
 
-/* TEXT dễ đọc hơn */
 .desc{
 font-size:16px;
-padding:0 5px;
 }
 
-/* BUTTON gọn hơn */
 .btn{
 padding:12px 20px;
 font-size:14px;
 }
 
-/* GUIDE BUTTON xếp dọc */
 .guide-menu{
 flex-direction:column;
 gap:12px;
@@ -333,7 +199,6 @@ gap:12px;
 width:100%;
 }
 
-/* BOX */
 .guide-box{
 font-size:15px;
 line-height:1.6;
