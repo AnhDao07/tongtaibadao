@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ma Sói</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+@font-face{
+font-family:'YouMurder';
+src:url('../fonts/SVN-YouMurdereBB.otf') format('opentype');
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+font-family:"Times New Roman", serif;
+
+background: linear-gradient(135deg,#0a0a0a 0%,#1a0a1a 50%,#0a0a1a 100%);
+
+color:#e0e0e0;
+
+min-height:100vh;
+
+overflow-x:hidden;
+
+}
+
+body::before{
+
+content:'';
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:
+radial-gradient(circle at 20% 80%,rgba(120,119,198,0.3),transparent 50%),
+radial-gradient(circle at 80% 20%,rgba(255,68,68,0.3),transparent 50%),
+radial-gradient(circle at 40% 40%,rgba(138,43,226,0.2),transparent 50%);
+
+z-index:-1;
+
+animation:bgShift 20s ease-in-out infinite;
+
+}
+
+ 
+
+/* NAVBAR */
+
+.navbar{
+
+background:rgba(0,0,0,0.9);
+
+padding:15px;
+
+position:fixed;
+
+width:100%;
+
+top:0;
+
+border-bottom:1px solid rgba(255,68,68,0.3);
+
+}
+
+.nav-menu{
+
+display:flex;
+
+justify-content:center;
+
+gap:30px;
+
+list-style:none;
+
+}
+
+.nav-menu a{
+
+color:#ff4444;
+
+text-decoration:none;
+
+font-weight:600;
+
+letter-spacing:1px;
+
+transition:0.3s;
+
+}
+
+.nav-menu a:hover{
+
+color:#ff1493;
+
+text-shadow:0 0 10px #ff4444;
+
+}
+
+/* MAIN */
+
+.container{
+
+max-width:1000px;
+
+margin:auto;
+
+padding:140px 20px 60px;
+
+text-align:center;
+
+}
+
+/* TITLE */
+
+.title{
+
+font-family:'YouMurder', serif;
+
+font-size:clamp(40px,6vw,70px);
+
+background:linear-gradient(45deg,#ff4444,#ff1493,#8a2be2);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+background-clip:text;
+
+animation:glow 2s ease-in-out infinite alternate;
+
+margin-bottom:20px;
+
+}
+
+@keyframes glow{
+
+from{filter:drop-shadow(0 0 10px #ff4444)}
+
+to{filter:drop-shadow(0 0 25px #ff1493)}
+
+}
+
+/* DESCRIPTION */
+
+.desc{
+
+font-size:18px;
+
+color:#ccc;
+
+line-height:1.6;
+
+max-width:700px;
+
+margin:auto;
+
+}
+
+/* BUTTON */
+
+.btn{
+
+display:inline-block;
+
+margin-top:40px;
+
+padding:14px 30px;
+
+background:linear-gradient(45deg,#ff4444,#ff1493);
+
+color:white;
+
+text-decoration:none;
+
+border-radius:10px;
+
+font-weight:600;
+
+transition:0.3s;
+
+}
+
+.btn:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 0 20px rgba(255,68,68,0.6);
+
+}
+
+
+
+.card:hover{
+
+transform:translateY(-8px);
+
+border-color:#ff1493;
+
+box-shadow:0 10px 30px rgba(255,68,68,0.4);
+
+}
+
+.card h3{
+
+color:#ff6666;
+
+margin-bottom:10px;
+
+}
+
+.card p{
+
+color:#ccc;
+
+font-size:14px;
+
+}
+
+.guide-menu{
+margin-top:40px;
+display:flex;
+justify-content:center;
+gap:20px;
+}
+
+.guide-btn{
+padding:12px 25px;
+background:linear-gradient(45deg,#ff4444,#ff1493);
+border:none;
+border-radius:8px;
+color:white;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+font-family:'Be Vietnam Pro',sans-serif;
+}
+
+.guide-btn:hover{
+transform:translateY(-3px);
+box-shadow:0 0 15px rgba(255,68,68,0.6);
+}
+
+.guide-content{
+margin-top:30px;
+max-width:700px;
+margin-left:auto;
+margin-right:auto;
+text-align:left;
+}
+
+.guide-box{
+display:none;
+background:rgba(0,0,0,0.6);
+padding:20px;
+border-radius:10px;
+border:1px solid rgba(255,68,68,0.4);
+}
+
+.guide-box h2{
+color:#ff6666;
+margin-bottom:10px;
+}
+
+.guide-box h3{
+font-size:22px;
+color:#ff6666;
+margin-top:20px;
+margin-bottom:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<ul class="nav-menu">
+
+<li><a href="masoi.html">Giới Thiệu</a></li>
+
+<li><a href="char.html">Char</a></li>
+
+<li><a href="artifacts.html">Cổ Vật</a></li>
+
+</ul>
+
+</nav>
+
+<main class="container">
+
+<h1 class="title">Ma Sói</h1>
+
+<div class="guide-menu">
+
+<button class="guide-btn" onclick="showGuide('g1')">Cổ vật</button>
+<button class="guide-btn" onclick="showGuide('g2')">Anh iu Em</button>
+
+</div>
+
+<div class="guide-content">
+
+<div id="g1" class="guide-box">
+<h2>Hướng dẫn chơi Ma Sói (Cổ Vật)</h2>
+<p>
+Ma Sói Cổ Vật là một bản mở rộng dành cho Ma Sói.<br> 
+
+Trong Cổ Vật, mỗi người chơi được nhận một cổ vật ngoài char thông thường của mình.<br>
+Các cổ vật thường cung cấp cho người chơi một khả năng bổ sung có thể ảnh hưởng đến trò chơi.<br><br>
+
+<h3>Cách chơi</h3><br>
+Trong suốt ván mỗi người chơi có thể lộ cổ vật của mình và sử dụng sức mạnh đặc biệt của nó.<br>
+Một số sức mạnh đặc biệt chỉ sử dụng một lần khi lật bài, trong khi những sức mạnh khác có hiệu lực liên tục sau khi lật.<br><br>
+
+Để sử dụng cổ vật, người chơi phải tuyên bố rằng họ muốn dùng cổ vật trước, sau đó (miễn là không có ai khác muốn cùng lúc) họ có dùng cổ vật và sử dụng hiệu ứng của nó.<br>
+Tất cả mọi người đều biết cổ vật đã được dùng.<br><br>
+
+Các cổ vật chỉ được dùng từng lá một (ngoại trừ những lá cổ vật cho phép lật các cổ vật khác).<br>
+Trong trường hợp hòa (khi nhiều người chơi tuyên bố muốn dùng cùng lúc), quản sẽ quyết định thứ tự dùng cổ vật.<br>
+Các cổ vật phải được giải quyết hoàn toàn trước khi có người khác dùng cổ vật tiếp theo.<br><br>
+
+<b> Người chơi không được lật cổ vật của mình vào ban đêm, hoặc sau khi họ bị treo cổ.<br>
+Tuy nhiên họ có thể dùng trong giai đoạn thảo luận cho đến trước khi bỏ phiếu.<br>
+Khi chết bởi các cách khác cũng không được lật Cổ Vật, ngoại trừ Rod of Reincarnation và Scepter of Rebirth.<br></b>
+Những lá cổ vật chưa lật của người chơi đã chết sẽ được đưa trả lại mà không được dùng.<br><br>
+
+Một số Cổ Vật có thể không còn phù hợp do thay đổi trong trò chơi, số lượng người chơi, hoặc số Cổ Vật đã dùng/chưa.<br>
+Nếu một Cổ Vật được lật khi điều kiện cần thiết của nó không tồn tại đầy đủ thì Cổ Vật đó vẫn được kích hoạt nhưng không tạo ra kết quả nào.<br>
+Ví dụ: nếu một người chơi lật lá Prism of Power khi có ít hơn 3 người chơi có thể được chọn, thì Cổ Vật đó sẽ bị sử dụng nhưng không gây ảnh hưởng gì đến trò chơi.<br><br>
+
+Các lá Cổ Vật luôn có quyền ưu tiên hơn vai trò Ultimate Werewolf.<br>
+Ví dụ: Cap of Idiocy sẽ khiến Pacifist phải bỏ phiếu giết người trong giai đoạn bỏ phiếu.<br><br>
+
+<h3>Ảnh hưởng đến trò chơi</h3><br>
+Cổ Vật rất khác với các sức mạnh từ vai trò Ma Sói vì các lá Cổ Vật sẽ trở thành thông tin công khai sau khi được lật.<br>
+Trong hầu hết các trường hợp (trừ khi lá bài ghi “secret” hoặc “secretly”), kết quả của sức mạnh đó cũng là thông tin công khai.<br>
+Điều này có nghĩa là toàn bộ dân làng sẽ biết những lợi ích hoặc bất lợi của người chơi đã lật Cổ Vật.<br><br>
+
+Trong quá trình chơi, người chơi có thể đánh lừa người khác về Cổ Vật mà mình có miễn là nó chưa được lật.<br>
+Sau khi lật, lá Cổ Vật sẽ được đặt ngửa và trở thành thông tin công khai cho tất cả người chơi.<br><br>
+
+Tiên tri (Seer) của Ultimate Werewolf hoặc bất kỳ vai trò nhìn ban đêm nào luôn nhìn thấy người chơi theo vai trò Ultimate Werewolf gốc của họ, chứ không phải vai trò bị thay đổi bởi Cổ Vật.<br><br>
+
+<h3>Lời khuyên cho quản trò</h3><br> 
+
+Khi thiết lập trò chơi với ít hơn 40 người (đa số các ván đều vậy), hãy dùng tỷ lệ 1:4 để xác định số lá “gem”.<br>
+Tức là 1 lá gem cho mỗi 4 Cổ Vật khác trong trò chơi.<br>
+Nếu không làm vậy, đôi khi sẽ có quá nhiều gem và các Cổ Vật chỉ bị chuyền qua lại giữa người chơi mà không ảnh hưởng nhiều đến trò chơi.<br><br>
+
+<h3>Định nghĩa</h3><br>
+
+Choose a Player: Việc chọn người luôn được thực hiện công khai (tất cả người chơi đều thấy).<br>
+Bạn không bao giờ được chọn chính mình.<br>
+Đối với các Cổ Vật “Always in effect upon reveal”, bạn không được chọn cùng một người hai lần trong một ván.<br><br>
+
+Each Day at Dawn: Một số Cổ Vật yêu cầu chủ sở hữu thực hiện hành động vào đầu buổi sáng sau khi các sự kiện ban đêm kết thúc.<br>
+Những lá bài này bắt đầu được sử dụng từ ngày sau khi chúng được lật.<br>
+Việc này xảy ra trước khi bắt đầu bất kỳ cuộc thảo luận nào.<br>
+Quản trò quyết định thứ tự giải quyết các lá bài này.<br><br>
+
+No Effect: Đôi khi một Cổ Vật sẽ không có tác dụng.<br>
+Ví dụ như Sapphire of Fate khi tất cả Cổ Vật đã lật hoặc Void of Nothingness.<br>
+Khi đó bạn không thể sử dụng hiệu ứng của Cổ Vật đó.<br><br>
+
+Player: Bất kỳ ai đang chơi Ultimate Werewolf.<br>
+Ngoại trừ Shroud of the Ghost, điều này có nghĩa là người đó chưa chết trong trò chơi.<br><br>
+
+Reveal: Một Cổ Vật được “reveal” khi nó được lật lên và hiển thị cho tất cả người chơi, đồng thời sức mạnh của nó được kích hoạt.<br><br>
+
+Secret / Secretly: Một số Cổ Vật cho phép bạn nhận thông tin bí mật.<br>
+Chỉ mình bạn biết thông tin đó.<br>
+Bạn có thể chia sẻ hoặc đánh lừa người khác nếu muốn.<br><br>
+
+Special Power: Đây là khả năng của một vai trò Ultimate Werewolf.<br>
+Một số Cổ Vật có thể loại bỏ hoặc chuyển sức mạnh đặc biệt này.<br><br>
+
+Ví dụ: sức mạnh của Werewolf là thức dậy ban đêm cùng các Werewolf khác.<br>
+Nếu một Werewolf mất sức mạnh đặc biệt, họ sẽ không thức dậy cùng những Werewolf khác.<br>
+Nếu đó là Werewolf cuối cùng, ban đêm sẽ không có ai chết.<br><br>
+
+Nếu một sức mạnh đặc biệt đã được sử dụng trước đó (ví dụ Witch đã dùng cả hai bình thuốc) và một Cổ Vật loại bỏ sức mạnh đó, thì sẽ không có gì xảy ra thêm.<br><br>
+
+Nếu Cổ Vật chuyển hoặc sao chép sức mạnh của người khác, người nhận vẫn có thể sử dụng sức mạnh đó ngay cả khi người sở hữu ban đầu đã dùng nó rồi.<br><br>
+
+Unrevealed: Một Cổ Vật được coi là chưa lật nếu nó chưa được lật lên và kích hoạt.<br><br>
+
+</p>
+</div>
+
+<div id="g2" class="guide-box">
+<h2>Chưa nghĩ ra =))</h2>
+<p>
+ Liên hệ rí để biết thêm (?)
+</p>
+</div>
+
+</div>
+
+<a class="btn" href="char.html">Bảng char</a>
+ 
+</main>
+
+<script>
+
+function showGuide(id){
+
+document.querySelectorAll('.guide-box').forEach(box=>{
+box.style.display="none";
+});
+
+document.getElementById(id).style.display="block";
+
+}
+
+</script>
+
+</body>
+</html>
