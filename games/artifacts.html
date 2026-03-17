@@ -1,0 +1,472 @@
+ <!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cổ Vật</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:"Segoe UI", sans-serif;
+background:#fafafa;
+color:#111;
+overflow-x:hidden;
+}
+
+/* NAV */
+.navbar{
+background:#000;
+padding:12px;
+text-align:center;
+}
+
+.navbar a{
+color:#fff;
+margin:0 10px;
+text-decoration:none;
+font-size:14px;
+}
+
+/* CONTAINER */
+.container{
+max-width:800px;
+margin:auto;
+padding:30px 15px;
+}
+
+h1{
+text-align:center;
+margin-bottom:25px;
+}
+
+/* CARD */
+.artifact{
+background:#fff;
+border-radius:18px;
+padding:18px;
+margin-bottom:18px;
+cursor:pointer;
+position:relative;
+transition:0.25s;
+border:1px solid #eee;
+overflow:hidden;
+}
+
+/* màu */
+.orange{
+border-left:5px solid #ff914d;
+background:linear-gradient(135deg, rgba(255,145,77,0.15), rgba(255,255,255,0.9));
+}
+
+.green{
+border-left:5px solid #2ecc71;
+background:linear-gradient(135deg, rgba(46,204,113,0.15), rgba(255,255,255,0.9));
+}
+
+/* badge */
+.badge{
+font-size:11px;
+padding:3px 7px;
+border-radius:8px;
+background:#000;
+color:#fff;
+display:inline-block;
+margin-bottom:6px;
+}
+
+/* title */
+.artifact h3{
+display:flex;
+align-items:center;
+gap:8px;
+transition:0.3s;
+}
+
+/* dot */
+.dot{
+width:10px;
+height:10px;
+border-radius:50%;
+}
+
+.orange .dot{background:#ff914d;}
+.green .dot{background:#2ecc71;}
+
+/* line chạy */
+.artifact::after{
+content:"";
+position:absolute;
+bottom:0;
+left:0;
+height:2px;
+width:0%;
+background:linear-gradient(to right,#ff914d,#2ecc71);
+transition:0.4s;
+}
+
+.artifact.active::after{
+width:100%;
+}
+
+/* detail */
+.detail{
+max-height:0;
+opacity:0;
+transform:translateY(-6px);
+overflow:hidden;
+transition:all 0.35s cubic-bezier(.2,.8,.2,1);
+font-size:14px;
+color:#444;
+}
+
+.artifact.active .detail{
+max-height:200px;
+opacity:1;
+transform:translateY(0);
+margin-top:10px;
+}
+
+/* CAPOO */
+.fly{
+position:fixed;
+left:-120px;
+pointer-events:none;
+}
+
+@keyframes fly{
+0%{transform:translateX(0);}
+100%{transform:translateX(120vw);}
+}
+
+@keyframes flyReverse{
+0%{transform:translateX(0) scaleX(-1);}
+100%{transform:translateX(-120vw) scaleX(-1);}
+}
+
+@media(max-width:600px){
+.fly{width:60px;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+<a href="#">Trang chủ</a>
+<a href="#">Char</a>
+<a href="#">Cổ vật</a>
+</div>
+
+<div class="container">
+<h1>🧿 Cổ Vật</h1>
+<div id="list"></div>
+</div>
+
+<script>
+
+const artifacts = [
+  {
+    name:"Hổ phách Bình minh",
+    color:"orange",
+    info:"Tất cả người chơi đã tiết lộ ít nhất một lần có thể sử dụng khi tiết lộ các lá Artifact (bao gồm cả chính lá này). Khi được tiết lộ, lấy tất cả các lá Artifact đã tiết lộ một lần từ tất cả người chơi và xáo lại vào bộ bài."
+  },
+  {
+    name:"Cung Săn bắn",
+    color:"orange",
+    info:"Chọn một người chơi mà sau đó họ chọn bất kỳ người chơi nào khác và loại họ ngay lập tức. Sau khi lá này được tiết lộ, không người chơi nào được nói chuyện cho đến khi người được chọn đã nhắm mục tiêu xong."
+  },
+  {
+    name:"Bùa Hộ mệnh",
+    color:"green",
+    info:"Mỗi ngày vào lúc bình minh, chủ sở hữu của Bùa phải đưa nó cho một người chơi chưa từng có nó trước đó. Người có Bùa không thể bị loại."
+  },
+  {
+    name:"Dấu ấn Dân làng",
+    color:"orange",
+    info:"Chọn một người chơi mất năng lực đặc biệt của họ."
+  },
+  {
+    name:"Thạch anh tím Tri thức",
+    color:"orange",
+    info:"Chọn một người chơi có một lá Artifact và bí mật xem nó. Sau đó quyết định xem bạn có muốn người đó tiết lộ lá Artifact của họ hay không. Nếu bạn quyết định họ phải làm vậy, họ phải tiết lộ ngay lập tức. Bạn không thể ép họ tiết lộ vào thời điểm sau."
+  },
+  {
+    name:"Hơi thở Ông già",
+    color:"orange",
+    info:"Chọn một người chơi sẽ bị loại vào đêm sau ngày kế tiếp (người đó ở trong game hôm nay, tối nay, và ngày mai trừ khi bị loại theo cách khác)."
+  },
+  {
+    name:"Mũ Ngu ngốc",
+    color:"green",
+    info:"Luôn bỏ phiếu để loại."
+  },
+  {
+    name:"Máu của Kẻ bệnh",
+    color:"orange",
+    info:"Chọn một người chơi bị nhiễm bệnh. Nếu Người Sói loại người đó, họ không được chọn mục tiêu vào đêm tiếp theo. Nếu người đó bị loại vào ban ngày, lá Artifact này không có hiệu lực."
+  },
+  {
+    name:"Vạc Phép thuật",
+    color:"orange",
+    info:"Chọn một người phải nói thật nếu họ là Dân làng thường hoặc không (không cần tiết lộ vai trò, chỉ xác nhận có phải Dân làng thường hay không)."
+  },
+  {
+    name:"Ngọc vàng May mắn",
+    color:"orange",
+    info:"Đổi lá Artifact này lấy một lá mới và phải tiết lộ ngay lập tức."
+  },
+
+  {
+    name:"Móng vuốt Người Sói",
+    color:"green",
+    info:"Bạn trở thành Người Sói. Khi thức dậy và nhắm mục tiêu với họ, giữ năng lực Vai trò Người Sói Tối thượng của bạn. Mục tiêu của Móng vuốt có thể không bị lấy lá Kim cương Phủ nhận. Bạn đang ở trong phe Người Sói và thắng/thua cùng họ."
+  },
+  {
+    name:"Ngọc lục bảo Ghen tuông",
+    color:"orange",
+    info:"Chọn một người chơi có một Artifact chưa tiết lộ, lấy Artifact đó và tiết lộ nó cho chính bạn. Người đó nhận một Artifact mới."
+  },
+  {
+    name:"Áo choàng Hoàng tử",
+    color:"green",
+    info:"Bạn không thể bị loại vào ban ngày. Bạn không được tiết lộ lá này sau khi bị loại."
+  },
+  {
+    name:"Con mắt Kẻ quan sát",
+    color:"green",
+    info:"Mỗi đêm, thức dậy cùng Seer. Bạn thấy người mà Seer chọn và nếu lựa chọn đó là Người Sói. Seer không được giao tiếp với bạn vào ban đêm."
+  },
+  {
+    name:"Đồng xu Tuổi trẻ",
+    color:"green",
+    info:"Bạn phải nói tên của vai trò Người Sói Tối thượng của bạn ít nhất một lần mỗi ngày nếu không sẽ bị loại vào đêm đó."
+  },
+  {
+    name:"Bình Giấc mơ",
+    color:"orange",
+    info:"Chọn một người mất năng lực đặc biệt trong hai ngày (hôm nay, tối nay và tối mai). Năng lực trở lại vào bình minh ngày thứ ba."
+  },
+  {
+    name:"Gậy Phù thủy già",
+    color:"green",
+    info:"Mỗi ngày vào bình minh, chọn một người chơi phải rời làng trong ngày. Người đó không được bỏ phiếu."
+  },
+  {
+    name:"Trái tim Thờ ơ",
+    color:"green",
+    info:"Mỗi ngày vào bình minh, chọn một người không được bỏ phiếu."
+  },
+
+  {
+    name:"Kim cương Phủ nhận",
+    color:"orange",
+    info:"Chọn một người có một lá Artifact đã tiết lộ và lấy lá đó từ họ, đưa lại vào bộ bài. Người đó không còn được nói mình có Artifact đó nữa. Móng vuốt Người Sói không thể bị lấy."
+  },
+  {
+    name:"Dấu ấn Thị trưởng",
+    color:"green",
+    info:"Phiếu bầu của bạn được tính là hai khi bỏ phiếu loại người."
+  },
+  {
+    name:"Mặt nạ Pháp thuật",
+    color:"green",
+    info:"Mỗi ngày vào bình minh, chọn một người không được nói chuyện trong ngày."
+  },
+  {
+    name:"Nhật ký Người mất ngủ",
+    color:"orange",
+    info:"Bạn được biết một trong hai người hàng xóm của bạn đã thức vào đêm trước. Người điều hành không nói rõ ai hoặc cả hai."
+  },
+  {
+    name:"Gương Song trùng",
+    color:"green",
+    info:"Chọn một người và bí mật xem vai trò Người Sói Tối thượng của họ. Bạn cũng có năng lực của họ ngoài năng lực riêng. Nếu bạn có vai trò thức dậy ban đêm, bạn sẽ thức dậy riêng và dùng năng lực đó."
+  },
+
+  {
+    name:"Nhẫn Sự thật",
+    color:"orange",
+    info:"Chọn một người. Họ phải nói bạn có phải là Người Sói hay không."
+  },
+  {
+    name:"Trượng Tái sinh",
+    color:"orange",
+    info:"Nếu bạn bị loại, tiết lộ Artifact và ở lại game… nhưng khác đi. Nếu bạn là bất kỳ loại Người Sói nào, bạn mất năng lực đặc biệt (không thức dậy ban đêm). Nếu bạn không phải Sói, bạn nhận một vai trò mới Người Sói Tối thượng. Người điều hành sẽ cho bạn một lá vai trò mới trước khi bạn thức dậy (bỏ lá cũ). Nếu bị tiết lộ trước khi bị loại, không có hiệu lực."
+  },
+  {
+    name:"Đá Onyx Hủy diệt",
+    color:"orange",
+    info:"Chọn một người có Artifact chưa tiết lộ và loại nó khỏi game (giữ trạng thái chưa tiết lộ)."
+  },
+  {
+    name:"Quả cầu Suy đoán",
+    color:"orange",
+    info:"Chọn hai người. Nếu cả hai là Người Sói, dân làng thắng ngay. Nếu không, bạn được biết có bao nhiêu người là Sói (0, 1 hoặc 2). Nếu sai (tức có Sói mà bạn nói không), bạn bị loại. Người đã tiết lộ Artifact này không thể là Sói."
+  },
+  {
+    name:"Hồng ngọc Định mệnh",
+    color:"orange",
+    info:"Chọn hai người và cho họ tiết lộ Artifact theo thứ tự bạn chọn (hiệu lực giống như họ tự tiết lộ)."
+  },
+  {
+    name:"Lam ngọc Số phận",
+    color:"orange",
+    info:"Chọn một người có Artifact chưa tiết lộ và bí mật xem nó. Khi người đó tiết lộ Artifact, cả hai bạn cùng giải hiệu ứng, bạn giải trước."
+  },
+  {
+    name:"Mặt dây Tự hào",
+    color:"orange",
+    info:"Chọn một người và bí mật cho họ xem vai trò Người Sói Tối thượng của bạn."
+  },
+
+  {
+    name:"Lăng kính Sức mạnh",
+    color:"orange",
+    info:"Chọn ba người. Đêm đó, Người Sói phải chọn một trong ba người. Nếu không thể loại cả ba, không ai bị loại."
+  },
+  {
+    name:"Quyền trượng Tái sinh",
+    color:"orange",
+    info:"Nếu bạn bị loại, tiết lộ Artifact và ở lại game. Nếu tiết lộ trước khi bị loại thì không có hiệu lực."
+  },
+  {
+    name:"Tấm vải Hồn ma",
+    color:"orange",
+    info:"Hỏi một người đã bị loại ngày hôm trước cho bạn một chữ cái."
+  },
+  {
+    name:"Khiên Vệ sĩ",
+    color:"green",
+    info:"Mỗi ngày vào bình minh, chọn một người không thể bị loại trong đêm đó."
+  },
+  {
+    name:"Khăn liệm Xấu hổ",
+    color:"green",
+    info:"Mỗi ngày vào bình minh, chọn một người phải đối mặt. Người đó vẫn được bỏ phiếu và ở làng nhưng phải tiếp tục đối mặt với người kia mọi lúc."
+  },
+  {
+    name:"Kẻ Lây lời nguyền",
+    color:"green",
+    info:"Bạn bị nguyền. Nếu Sói nhắm bạn vào ban đêm, bạn trở thành Sói."
+  },
+
+  {
+    name:"Giáo Cuồng nộ",
+    color:"orange",
+    info:"Chọn một người bị loại ngay lập tức và cho họ xem vai trò Người Sói Tối thượng của bạn."
+  },
+  {
+    name:"Gậy Tiên tri",
+    color:"orange",
+    info:"Chọn một người và bí mật xem vai trò Người Sói Tối thượng của họ."
+  },
+  {
+    name:"Đá Biến đổi",
+    color:"orange",
+    info:"Bí mật đổi vai trò Người Sói Tối thượng của bạn với vai trò khác. Nếu bạn là Sói, Người điều hành sẽ đưa bạn một lá Sói ngẫu nhiên."
+  },
+  {
+    name:"Bùa Rắc rối",
+    color:"orange",
+    info:"Hai người chơi bị loại vào ngày lá này được tiết lộ."
+  },
+
+  {
+    name:"Hư vô",
+    color:"green",
+    info:"Artifact này không có hiệu lực."
+  },
+  {
+    name:"Lá phiếu Từ bên kia",
+    color:"green",
+    info:"Bạn có thể bỏ phiếu vào ban ngày, kể cả khi đã bị loại. Ban đêm, bạn phải nhắm một người. Bạn không được nói hoặc buộc tội."
+  },
+  {
+    name:"Vòng hoa Hòa bình",
+    color:"green",
+    info:"Không bao giờ bỏ phiếu để loại."
+  }
+];
+const list = document.getElementById("list");
+
+artifacts.forEach(a=>{
+let div = document.createElement("div");
+div.className = "artifact " + a.color;
+
+div.innerHTML = `
+<div class="badge">${a.color==="orange"?"1 lần":"∞"}</div>
+<h3><span class="dot"></span>${a.name}</h3>
+<div class="detail">${a.info}</div>
+`;
+
+div.onclick = ()=>{
+div.classList.toggle("active");
+};
+
+list.appendChild(div);
+});
+
+/* 🎲 CAPOO RANDOM KHÔNG DÍNH */
+const usedPositions = [];
+const minGap = 15;
+
+function getSafeTop(){
+let tries = 0;
+
+while(tries < 50){
+let top = Math.random()*80;
+let ok = usedPositions.every(pos => Math.abs(pos - top) > minGap);
+
+if(ok){
+usedPositions.push(top);
+return top;
+}
+tries++;
+}
+return Math.random()*80;
+}
+
+function createFly(src){
+let img = document.createElement("img");
+img.src = src;
+img.className = "fly";
+
+let size = 50 + Math.random()*50;
+img.style.width = size + "px";
+
+// vị trí an toàn
+img.style.top = getSafeTop() + "%";
+
+// tốc độ
+let duration = 6 + Math.random()*3;
+
+// delay
+img.style.animationDelay = Math.random()*9 + "s";
+
+if(Math.random() > 0.5){
+img.style.right = "-200px";
+img.style.left = "auto";
+img.style.animation = `flyReverse ${duration}s linear infinite`;
+img.style.transform = "scaleX(-1)";
+}else{
+img.style.animation = `fly ${duration}s linear infinite`;
+}
+
+document.body.appendChild(img);
+}
+
+const capoos = [ "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NXVidmF5cWpyMGszOTBkeWMxYzcyMDh1Nzd5MzhkaWNoa3Z2M2JrMiZlcD12MV9zdGlja2Vyc19yZWxhdGVkJmN0PXM/s7tpEMLzriGWuRIi0e/giphy.gif", "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NXVidmF5cWpyMGszOTBkeWMxYzcyMDh1Nzd5MzhkaWNoa3Z2M2JrMiZlcD12MV9zdGlja2Vyc19yZWxhdGVkJmN0PXM/TlrMw5S8m50LwokFcl/giphy.gif"
+];
+
+// spawn
+for(let i=0;i<1;i++){
+createFly(capoos[Math.floor(Math.random()*capoos.length)]);
+}
+
+</script>
+
+</body>
+</html>
